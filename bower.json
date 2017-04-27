@@ -1,0 +1,20 @@
+{
+  "name": "stories",
+  "homepage": "https://github.com/diwaneemedia/stories",
+  "authors": [
+    "Aleksandar Veljkovic <aleksandar.veljkovic@diwanee.com>"
+  ],
+  "description": "Top stories popup slider for Diwanee publications.",
+  "main": "stories.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1"
+  }
+}

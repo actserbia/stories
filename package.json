@@ -1,0 +1,23 @@
+{
+  "name": "stories",
+  "version": "0.0.0",
+  "description": "Top stories popup slider for Diwanee publications.",
+  "main": "stories.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Aleksandar Veljkovici coa.develop@gmail.com",
+  "license": "GPL",
+  "devDependencies": {},
+  "dependencies": {
+    "gulp-add-src": "^0.2.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^4.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-print": "^2.0.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-wrap": "^0.13.0",
+    "handlebars": "^4.0.6"
+  }
+}

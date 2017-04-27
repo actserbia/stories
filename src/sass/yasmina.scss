@@ -1,0 +1,30 @@
+@import "style";
+
+div.header-stories {
+  position: relative;
+  .header-story {
+    width: 20%;
+    height: 100%;
+    overflow: hidden;
+    text-align: center;
+    position: relative;
+    .story-logo {
+      height: 70%;
+      overflow: hidden;
+      position: relative;
+      display: block;
+      svg {
+        max-width: 80%;
+        max-height: 80%;
+        @include center;
+      }
+    }
+    .story-sponsor-name {
+      height: 20%;
+      display: block;
+      font-size: 0.45rem;
+      overflow: hidden;
+      position: relative;
+    }
+  }
+}
