@@ -8,6 +8,28 @@
 </head>
 
 <body>
+
+  <!-- Remote Sources -->
+  <script>
+    window.appApiUrl = "https://api.diwanee.net/v1/";
+    window.appApiKey = "f9E7d4CA9t3AFB212i515D0o9433q8";
+    window.appThumborConfig = {
+      //"amazonS3Path": "https://harmony-assets-live.s3.amazonaws.com/",
+      "amazonS3Path": "harmony-assets-staging.s3.amazonaws.com/",
+      //"amazonS3Path": "harmony-assets-live.s3.amazonaws.com/",
+      "thumbor": {
+        "thumborSecurityKey": "w85%sK;x+jQ1*-z~7Cx@ie",
+        //"thumborServerUrl": "http://img1.diwanee.net",
+        "thumborServerUrl": "http://img.yasmina.com",
+        "hasResize": true,
+        "hasTrim": false,
+        "isSmart": true,
+        "resizeWidth": "311",
+        "resizeHeight": "200"
+      }
+    };
+  </script>
+
   <div class="full-wrapper">
     <p>
       Content of the document...... Content of the document...... Content of the document...... Content of the document...... Content of the document...... Content of the document...... Content of the document......
@@ -103,8 +125,20 @@
     </p>
   </div>
 
+  <!-- LOCAL -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="src/js/stories.js"></script>
+  <script src="bower_components/jsSHA/src/sha.js"></script>
+  <script src="dist/local/thumbor.js"></script>
+
+  <script src="dist/local/mwembedloader.js"></script>
+  <script src="dist/local/kWidget.getSources.js"></script>
+
+  <script src="bower_components/handlebars/handlebars.runtime.min.js"></script>
+  <!-- eofLOCAL -->
+
+  <script src="bower_components/slick-carousel/slick/slick.js"></script>
+
+  <script src="dist/js/main.js"></script>
   <script>
     $('.header-stories').stories();
   </script>

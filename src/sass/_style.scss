@@ -6,3 +6,63 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+.st-wrapper {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 10010;
+  top: 0;
+  left: 0;
+  background-color: black;
+  color: white;
+
+
+  .st-header {
+    $headerHeight: 50px;
+    height: $headerHeight;
+    overflow: hidden;
+    position: relative;
+
+
+    .st-close {
+      display: block;
+      width: $headerHeight;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      svg {
+        height: 40%;
+        @include center;
+      }
+    }
+
+    .st-logo {
+      float: left;
+      position: relative;
+      width: $headerHeight;
+      height: 100%;
+      svg {
+        height: 60%;
+        @include center;
+
+        image {
+          fill: red;
+        }
+      }
+
+    }
+    h3 {
+      font-size: 10px;
+      float: left;
+      height: $headerHeight;
+      line-height: $headerHeight;
+      margin: 0;
+    }
+
+  }
+
+
+
+}

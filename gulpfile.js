@@ -11,13 +11,14 @@ var addsrc = require('gulp-add-src');
 
 var tasks = function(){
   compileSass();
-  compileJS('src/tpl/*.handlebars', 'stories', 'src/js/main.js', 'dist/js', "main.js");
+  compileJS(['src/tpl/*.handlebars'], 'stories', 'src/js/main.js', 'dist/js', "main.js");
 };
 
 var compileJS = function(srcTpl, namespace, srcJs, destFolder, destFile){
   gulp.src(srcTpl)
+    .pipe(plumber())
     .pipe(handlebars({
-      handlebars: require('handlebars')
+      handlebars: require('handlebars') // FIX: Template was precompiled with an older version of …ur runtime to an older version
     }))
     .pipe(wrap('Handlebars.template(<%= contents %>)'))
     .pipe(declare({
@@ -42,6 +43,7 @@ var compileSass = function(){
 }
 
 gulp.task('watch', function () {
+  tasks();
   return gulp.watch(['./src/**'], tasks);
 });
 
