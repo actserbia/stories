@@ -29,11 +29,31 @@
 
 
   <main>
-    <ul>
+    <div class='slider'>
       {{#each elements}}
 
+        {{#if this.imgSrc}}
+          <div class='item item-img'>
+
+              <img src="{{this.imgSrc}}" alt="">
+
+          </div>
+        {{/if}}
+
+        {{#if this.vKaltura}}
+          <div class='item item-kaltura'>
+
+              <video controls playsinline>
+                {{#each this.vKaltura.sources}}
+                  <source src="{{this.src}}" type="{{this.type}}">
+                {{/each}}
+              </video>
+
+          </div>
+        {{/if}}
+
       {{/each}}
-    </ul>
+    </div>
     {{main}}
   </main>
 
