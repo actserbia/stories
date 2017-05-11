@@ -6,8 +6,11 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-
-.st-wrapper {
+.all-st-wrapper{
+  &.opened {
+    display: block;
+  }
+  display: none;
   position: fixed;
   width: 100%;
   height: 100%;
@@ -15,85 +18,100 @@
   top: 0;
   left: 0;
   background-color: black;
-  color: white;
-
-
-  .st-header {
-    $headerHeight: 50px;
-    height: $headerHeight;
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 9999;
-
-
-    .st-close {
-      display: block;
-      width: $headerHeight;
+  &>.slick-list {
+    height: 100%;
+    &>.slick-track {
       height: 100%;
-      position: absolute;
-      top: 0;
-      right: 0;
-      svg {
-        height: 40%;
-        @include center;
-      }
     }
-
-    .st-logo {
-      float: left;
-      position: relative;
-      width: $headerHeight;
-      height: 100%;
-      svg {
-        height: 60%;
-        @include center;
-
-        image {
-          fill: red;
-        }
-      }
-
-    }
-    h3 {
-      font-size: 10px;
-      float: left;
-      height: $headerHeight;
-      line-height: $headerHeight;
-      margin: 0;
-    }
-
   }
 
-  main {
+  .st-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-    .slider {
+
+
+
+    color: white;
+
+
+    .st-header {
+      $headerHeight: 50px;
+      height: $headerHeight;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+
+
+      .st-close {
+        display: block;
+        width: $headerHeight;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        svg {
+          height: 40%;
+          @include center;
+        }
+      }
+
+      .st-logo {
+        float: left;
+        position: relative;
+        width: $headerHeight;
+        height: 100%;
+        svg {
+          height: 60%;
+          @include center;
+
+          image {
+            fill: red;
+          }
+        }
+
+      }
+      h3 {
+        font-size: 10px;
+        float: left;
+        height: $headerHeight;
+        line-height: $headerHeight;
+        margin: 0;
+      }
+
+    }
+
+    .st-main {
       position: relative;
       width: 100%;
       height: 100%;
-      .slick-list {
-        height: 100%;
-      }
-      .slick-track {
-        height: 100%;
-      }
-      .item {
-        height: 100%;
+      .st-slider {
         position: relative;
-        img, video {
-          @include center;
-          max-width: 100%;
-          max-height: 100%;
-          width: auto;
-          height: auto;
-          display: block;
+        width: 100%;
+        height: 100%;
+        .slick-list {
+          height: 100%;
+        }
+        .slick-track {
+          height: 100%;
+        }
+        .item {
+          height: 100%;
+          position: relative;
+          img, video {
+            @include center;
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            display: block;
+          }
         }
       }
     }
-  }
 
+  }
 }
