@@ -1,15 +1,20 @@
 ;(function($){
-  $.fn.stories = function() {
+  $.fn.stories = function(set) {
+
+    set = set || {};
 
     var $brands = $(this).children('div');
     var $clickers = $("a", $(this));
 
     //var apiPrefix = "http://192.168.0.111:8085/";
-    var apiPrefix = "src/test-api";
+    //var apiPrefix = "src/test-api";
+    var apiPrefix = set.apiPrefix || "";
 
     var apiUrls = [];
     var storiesAll = [];
     var $storiesRendered = $();
+    var timeoutNext = 0;
+    var timeoutNextT = 3000;
     //var storiesData = [];
 
     // PRELOADER
@@ -17,7 +22,9 @@
       getAllData().always(function(storiesAjaxed){
         var mediaElementSetters = [];
         $.each(storiesAjaxed, function(i, storieAjaxed){
-          var storie = storieAjaxed[0]
+          var storie = storieAjaxed[0];
+          storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
+          storie.storieIndex = i;
           storiesAll.push(storie);
           mediaElementSetters.push(setArticleMedia(storie));
         });
@@ -28,28 +35,46 @@
           });
           $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
           $('body').append($storiesRendered);
+          $storiesRendered.addClass('st-ready');
         });
       });
     });
 
 
     // STARTER
-    $clickers.on('click', function(ev){
+    $clickers.one('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
-      $this = $(this)
-      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened')) {
+      $this = $(this);
+      var $brand = $this.parent();
+      var storieIndex = $brands.index($brand);
+      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened') || !$storiesRendered.hasClass('st-ready')) {
         return;
       }
       prePlayVideos($storiesRendered);
       $storiesRendered.addClass('opened');
-      var $brand = $this.parent();
-      var storieIndex = $brands.index($brand);
-
       $('.st-slider', $storiesRendered).each(function(i, slider){
         sliderArticle( $(slider) );
       });
       sliderWrapper($storiesRendered, storieIndex);
+      $storiesRendered.find('.st-close').on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        destroy();
+      });
+      $clickers.off('click');
+      /// reinitialize
+      $clickers.on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        $this = $(this);
+        var $brand = $this.parent();
+        var storieIndex = $brands.index($brand);
+        console.log(storieIndex);
+        $storiesRendered.addClass('opened');
+        $storiesRendered.slick('slickGoTo', storieIndex, true);
+        $(window).trigger('resize');
+      });
     });
 
 
@@ -57,6 +82,7 @@
 
     // REQUEST SINGLE ARTICLE
     var request = function(apiUrl, unique){
+      console.log(apiUrl);
       return $.ajax({
         url: apiPrefix + apiUrl,
         dataType : "jsonp",
@@ -148,31 +174,28 @@
     // ARTICLE SLIDER
     var sliderArticle = function($el){
       var $slides = $el.find('.item');
-
       $el.on('init', function(ev, slick){
         slick.$slider.data('slick', slick);
       });
-
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
           console.log('article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
-          //var $next = (nextSlide) ? slick.$slides.eq(nextSlide) : slick.$slides.eq(0);
-          //var activeStory = $next.parents('.st-wrapper.slick-active');
-          //console.log('as bc');
-           //console.log($next.find('video'));
           rewindVideos($storiesRendered);
-
-
+          clearTimeout(timeoutNext);
           $nextItem = slick.$slides.eq(nextSlide);
           $slides = slick.$slides;
-          //console.log($nextItem.addClass('st-current'))
           $slides.removeClass('st-active');
           $nextItem.addClass('st-active');
-          if (!!$nextItem.find('video').length) {
+          if ($nextItem.hasClass('item-kaltura')) {
             console.log('video item founded');
-            //$next.find('video')[0].currentTime = 0;
             $nextItem.find('video')[0].play();
+          }
+          else if ($nextItem.hasClass('item-img')) {
+            console.log('image item founded');
+            timeoutNext = setTimeout(function(){
+              next($el);
+            }, timeoutNextT);
           }
       });
 
@@ -180,7 +203,7 @@
         ev.stopPropagation();
         ev.preventDefault();
         //$nextItem = slick.$slides.eq(nextSlide);
-        console.log('article slider afterChange')
+        console.log('article slider afterChange --')
         //console.log($nextItem)
 
       });
@@ -190,6 +213,9 @@
         console.log('click next');
         next($el);
       });
+      $('video', $slides).on('ended', function(){
+        next($el);
+      });
       $el.slick({
         arrows: false,
         infinite: false,
@@ -197,6 +223,7 @@
         mobileFirst: true,
         fade: true,
         swipe: false,
+        rtl: true
       });
     }
 
@@ -216,33 +243,23 @@
         infinite: false,
         adaptiveHeight: false,
         mobileFirst: true,
-        initialSlide: initialSlide
+        initialSlide: initialSlide,
+        rtl: true,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
         console.log('wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
-
         var $nextStoryeSlider =  slick.$slides.eq(nextSlide).find('.slick-slider');
         var $nexItems = $nextStoryeSlider.data('slick').$slides;
-
-        $nextStoryeSlider.slick('init');
-      /*
-        // if else fix for Slick's ignorance for one item
-        if ($nexItems.length === 1) {
+        var nextCurrent = $nextStoryeSlider.slick('slickCurrentSlide');
+        // if/else fix for Slick's ignorance:: for one item; for 0 GoTo 0;
+        if (nextCurrent === 0 ) {
           $nextStoryeSlider.trigger('beforeChange', [$nextStoryeSlider.data('slick'), 0, 0]);
         }
         else {
-          $nextStoryeSlider.slick('slickGoTo', 1);
           $nextStoryeSlider.slick('slickGoTo', 0);
         }
-*/
-
-
-
-
-
-
       });
       $el.on("afterChange", function(ev, slick, currentSlide){
         ev.stopPropagation();
@@ -262,10 +279,10 @@
     };
 
     var nextParent = function($childSlider){
-      var $parentSlider = $childSlider.parents('.slick-slider');
-      var $parentItems = $parentSlider[0].slick.$slides;
-      if (!$parentItems.last().hasClass('st-active')) {
-        $parentSlider.slick('slickNext');
+      var $wrapperSlider = $childSlider.parents('.slick-slider');
+      var $parentItems = $wrapperSlider[0].slick.$slides;
+      if (!$parentItems.last().hasClass('slick-current')) {
+        $wrapperSlider.slick('slickNext');
       }
       else {
         destroy();
@@ -274,10 +291,26 @@
 
     var destroy = function(){
       $storiesRendered.removeClass('opened');
+      clearTimeout(timeoutNext);
+      rewindVideos($storiesRendered);
+      /*
+      console.log('destroy');
+      $storiesRendered.removeClass('opened');
+      rewindVideos($storiesRendered);
+      clearTimeout(timeoutNext);
       $storiesRendered.find('.st-slider').each(function(i,storieSlider){
         $(storieSlider).slick('unslick');
+        $(storieSlider).off();
+        console.log('article slider destoyed');
       });
       $storiesRendered.slick('unslick');
+      $storiesRendered.off();
+
+      $('.item', $storiesRendered).off();
+      $('video', $storiesRendered).off();
+
+      console.log('wrapper slider destoyed');
+      */
     }
 
     // PREPLAY VIDEOS TO FIX AUTOPLAY
@@ -299,6 +332,8 @@
         video.currentTime = 0;
       });
     };
+
+    console.log('stories applied');
 
   };
 })(jQuery);

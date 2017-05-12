@@ -6,7 +6,25 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+.slick-list {
+    position: relative;
+    overflow: hidden;
+    display: block;
+}
+
+.slick-track {
+    position: relative;
+    left: 0;
+    top: 0;
+    display: block;
+}
+
+
+
+
 .all-st-wrapper{
+  //direction: ltr;
   &.opened {
     display: block;
   }

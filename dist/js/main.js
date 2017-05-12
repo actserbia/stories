@@ -1,7 +1,7 @@
 this["stories"] = this["stories"] || {};
 this["stories"]["templates"] = this["stories"]["templates"] || {};
 this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {});
+    var stack1, alias1=depth0 != null ? depth0 : {};
 
   return "\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.imgSrc : depth0),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -16,7 +16,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     var stack1;
 
   return "          <div class='item item-kaltura'>\n\n              <video poster=\"\" playsinline>\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.vKaltura : depth0)) != null ? stack1.sources : stack1),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.vKaltura : depth0)) != null ? stack1.sources : stack1),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "              </video>\n\n          </div>\n";
 },"5":function(container,depth0,helpers,partials,data) {
     var alias1=container.lambda, alias2=container.escapeExpression;
@@ -27,28 +27,39 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     + alias2(alias1((depth0 != null ? depth0.type : depth0), depth0))
     + "\">\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.escapeExpression;
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<div class=\"st-wrapper\">\n\n  <div class=\"st-header\">\n\n    <span class=\"st-close\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 50 50\">\n        <line x1=\"0\" y1=\"0\" x2=\"50\" y2=\"50\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n        <line x1=\"0\" y1=\"50\" x2=\"50\" y2=\"0\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n      </svg>\n    </span>\n\n    <span class=\"st-logo\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n        <defs>\n          <clipPath id=\"s-clipCircle\">\n            <circle r=\"50\" cx=\"50\" cy=\"50\"></circle>\n          </clipPath>\n        </defs>\n        <polygon points=\"0,0 0,100 100,100 100,0\" clip-path=\"url(#s-clipCircle)\" style=\"fill:white;\" />\n        <image x=\"0\" y=\"0\" clip-path=\"url(#s-clipCircle)\" width=\"100\" height=\"100\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\""
-    + alias2(((helper = (helper = helpers.logo || (depth0 != null ? depth0.logo : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"logo","hash":{},"data":data}) : helper)))
+  return "<div class=\"st-wrapper\">\n\n  <div class=\"st-header\">\n\n    <span class=\"st-close\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 50 50\">\n        <line x1=\"0\" y1=\"0\" x2=\"50\" y2=\"50\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n        <line x1=\"0\" y1=\"50\" x2=\"50\" y2=\"0\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n      </svg>\n    </span>\n\n    <span class=\"st-logo\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n        <defs>\n          <clipPath id=\"s-clipCircle-"
+    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
+    + "\">\n            <circle r=\"50\" cx=\"50\" cy=\"50\"></circle>\n          </clipPath>\n        </defs>\n        <polygon points=\"0,0 0,100 100,100 100,0\" clip-path=\"url(#s-clipCircle-"
+    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
+    + ")\" style=\"fill:white;\" />\n        <image x=\"0\" y=\"0\" clip-path=\"url(#s-clipCircle-"
+    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
+    + ")\" width=\"100\" height=\"100\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\""
+    + alias4(((helper = (helper = helpers.logo || (depth0 != null ? depth0.logo : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"logo","hash":{},"data":data}) : helper)))
     + "\"></image>\n        <circle cx=\"50\" cy=\"50\" r=\"46\" stroke=\"white\" stroke-width=\"3\" fill=\"none\"></circle>\n        <circle cx=\"50\" cy=\"50\" r=\"49\" stroke=\"#9e914c\" stroke-width=\"2\" fill=\"none\"></circle>\n      </svg>\n    </span>\n\n    <h3>"
-    + alias2(container.lambda(((stack1 = ((stack1 = ((stack1 = (depth0 != null ? depth0.sponsors : depth0)) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1), depth0))
+    + alias4(container.lambda(((stack1 = ((stack1 = ((stack1 = (depth0 != null ? depth0.sponsors : depth0)) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1), depth0))
     + "</h3>\n\n  </div>\n\n\n  <div class='st-main'>\n    <div class='st-slider'>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </div>\n  </div>\n\n  <div class=\"storie-ui-left\"></div>\n  <div class=\"storie-ui-right\"></div>\n\n</div>\n";
 },"useData":true});
 ;(function($){
-  $.fn.stories = function() {
+  $.fn.stories = function(set) {
+
+    set = set || {};
 
     var $brands = $(this).children('div');
     var $clickers = $("a", $(this));
 
     //var apiPrefix = "http://192.168.0.111:8085/";
-    var apiPrefix = "src/test-api";
+    //var apiPrefix = "src/test-api";
+    var apiPrefix = set.apiPrefix || "";
 
     var apiUrls = [];
     var storiesAll = [];
     var $storiesRendered = $();
+    var timeoutNext = 0;
+    var timeoutNextT = 3000;
     //var storiesData = [];
 
     // PRELOADER
@@ -56,7 +67,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       getAllData().always(function(storiesAjaxed){
         var mediaElementSetters = [];
         $.each(storiesAjaxed, function(i, storieAjaxed){
-          var storie = storieAjaxed[0]
+          var storie = storieAjaxed[0];
+          storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
+          storie.storieIndex = i;
           storiesAll.push(storie);
           mediaElementSetters.push(setArticleMedia(storie));
         });
@@ -67,28 +80,46 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           });
           $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
           $('body').append($storiesRendered);
+          $storiesRendered.addClass('st-ready');
         });
       });
     });
 
 
     // STARTER
-    $clickers.on('click', function(ev){
+    $clickers.one('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
-      $this = $(this)
-      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened')) {
+      $this = $(this);
+      var $brand = $this.parent();
+      var storieIndex = $brands.index($brand);
+      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened') || !$storiesRendered.hasClass('st-ready')) {
         return;
       }
       prePlayVideos($storiesRendered);
       $storiesRendered.addClass('opened');
-      var $brand = $this.parent();
-      var storieIndex = $brands.index($brand);
-
       $('.st-slider', $storiesRendered).each(function(i, slider){
         sliderArticle( $(slider) );
       });
       sliderWrapper($storiesRendered, storieIndex);
+      $storiesRendered.find('.st-close').on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        destroy();
+      });
+      $clickers.off('click');
+      /// reinitialize
+      $clickers.on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        $this = $(this);
+        var $brand = $this.parent();
+        var storieIndex = $brands.index($brand);
+        console.log(storieIndex);
+        $storiesRendered.addClass('opened');
+        $storiesRendered.slick('slickGoTo', storieIndex, true);
+        $(window).trigger('resize');
+      });
     });
 
 
@@ -96,6 +127,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 
     // REQUEST SINGLE ARTICLE
     var request = function(apiUrl, unique){
+      console.log(apiUrl);
       return $.ajax({
         url: apiPrefix + apiUrl,
         dataType : "jsonp",
@@ -187,31 +219,28 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     // ARTICLE SLIDER
     var sliderArticle = function($el){
       var $slides = $el.find('.item');
-
       $el.on('init', function(ev, slick){
         slick.$slider.data('slick', slick);
       });
-
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
           console.log('article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
-          //var $next = (nextSlide) ? slick.$slides.eq(nextSlide) : slick.$slides.eq(0);
-          //var activeStory = $next.parents('.st-wrapper.slick-active');
-          //console.log('as bc');
-           //console.log($next.find('video'));
           rewindVideos($storiesRendered);
-
-
+          clearTimeout(timeoutNext);
           $nextItem = slick.$slides.eq(nextSlide);
           $slides = slick.$slides;
-          //console.log($nextItem.addClass('st-current'))
           $slides.removeClass('st-active');
           $nextItem.addClass('st-active');
-          if (!!$nextItem.find('video').length) {
+          if ($nextItem.hasClass('item-kaltura')) {
             console.log('video item founded');
-            //$next.find('video')[0].currentTime = 0;
             $nextItem.find('video')[0].play();
+          }
+          else if ($nextItem.hasClass('item-img')) {
+            console.log('image item founded');
+            timeoutNext = setTimeout(function(){
+              next($el);
+            }, timeoutNextT);
           }
       });
 
@@ -219,7 +248,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         ev.stopPropagation();
         ev.preventDefault();
         //$nextItem = slick.$slides.eq(nextSlide);
-        console.log('article slider afterChange')
+        console.log('article slider afterChange --')
         //console.log($nextItem)
 
       });
@@ -229,6 +258,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         console.log('click next');
         next($el);
       });
+      $('video', $slides).on('ended', function(){
+        next($el);
+      });
       $el.slick({
         arrows: false,
         infinite: false,
@@ -236,6 +268,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         mobileFirst: true,
         fade: true,
         swipe: false,
+        rtl: true
       });
     }
 
@@ -255,33 +288,23 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         infinite: false,
         adaptiveHeight: false,
         mobileFirst: true,
-        initialSlide: initialSlide
+        initialSlide: initialSlide,
+        rtl: true,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
         console.log('wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
-
         var $nextStoryeSlider =  slick.$slides.eq(nextSlide).find('.slick-slider');
         var $nexItems = $nextStoryeSlider.data('slick').$slides;
-
-        $nextStoryeSlider.slick('init');
-      /*
-        // if else fix for Slick's ignorance for one item
-        if ($nexItems.length === 1) {
+        var nextCurrent = $nextStoryeSlider.slick('slickCurrentSlide');
+        // if/else fix for Slick's ignorance:: for one item; for 0 GoTo 0;
+        if (nextCurrent === 0 ) {
           $nextStoryeSlider.trigger('beforeChange', [$nextStoryeSlider.data('slick'), 0, 0]);
         }
         else {
-          $nextStoryeSlider.slick('slickGoTo', 1);
           $nextStoryeSlider.slick('slickGoTo', 0);
         }
-*/
-
-
-
-
-
-
       });
       $el.on("afterChange", function(ev, slick, currentSlide){
         ev.stopPropagation();
@@ -301,10 +324,10 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     };
 
     var nextParent = function($childSlider){
-      var $parentSlider = $childSlider.parents('.slick-slider');
-      var $parentItems = $parentSlider[0].slick.$slides;
-      if (!$parentItems.last().hasClass('st-active')) {
-        $parentSlider.slick('slickNext');
+      var $wrapperSlider = $childSlider.parents('.slick-slider');
+      var $parentItems = $wrapperSlider[0].slick.$slides;
+      if (!$parentItems.last().hasClass('slick-current')) {
+        $wrapperSlider.slick('slickNext');
       }
       else {
         destroy();
@@ -313,10 +336,26 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 
     var destroy = function(){
       $storiesRendered.removeClass('opened');
+      clearTimeout(timeoutNext);
+      rewindVideos($storiesRendered);
+      /*
+      console.log('destroy');
+      $storiesRendered.removeClass('opened');
+      rewindVideos($storiesRendered);
+      clearTimeout(timeoutNext);
       $storiesRendered.find('.st-slider').each(function(i,storieSlider){
         $(storieSlider).slick('unslick');
+        $(storieSlider).off();
+        console.log('article slider destoyed');
       });
       $storiesRendered.slick('unslick');
+      $storiesRendered.off();
+
+      $('.item', $storiesRendered).off();
+      $('video', $storiesRendered).off();
+
+      console.log('wrapper slider destoyed');
+      */
     }
 
     // PREPLAY VIDEOS TO FIX AUTOPLAY
@@ -338,6 +377,8 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         video.currentTime = 0;
       });
     };
+
+    console.log('stories applied');
 
   };
 })(jQuery);

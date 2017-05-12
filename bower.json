@@ -16,7 +16,7 @@
   ],
   "dependencies": {
     "jquery": "*",
-    "slick-carousel": "1.5.8",
+    "slick.js": "1.5.8",
     "jsSHA": "1.5.0",
     "handlebars": "^4.0.8"
   }

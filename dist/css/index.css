@@ -5,7 +5,8 @@
 
 html, body {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+  direction: rtl; }
 
 .header-stories {
   position: relative;
@@ -36,6 +37,17 @@ a {
   border: 1px solid #e9e9e9;
   float: right;
   width: 100%; }
+
+.slick-list {
+  position: relative;
+  overflow: hidden;
+  display: block; }
+
+.slick-track {
+  position: relative;
+  left: 0;
+  top: 0;
+  display: block; }
 
 .all-st-wrapper {
   display: none;
