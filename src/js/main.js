@@ -45,10 +45,11 @@
       $storiesRendered.addClass('opened');
       var $brand = $this.parent();
       var storieIndex = $brands.index($brand);
-      sliderWrapper($storiesRendered, storieIndex);
+
       $('.st-slider', $storiesRendered).each(function(i, slider){
         sliderArticle( $(slider) );
       });
+      sliderWrapper($storiesRendered, storieIndex);
     });
 
 
@@ -144,44 +145,49 @@
       return dfd.promise();
     };
 
-    // SLIDER INTI Article
+    // ARTICLE SLIDER
     var sliderArticle = function($el){
       var $slides = $el.find('.item');
+
+      $el.on('init', function(ev, slick){
+        slick.$slider.data('slick', slick);
+      });
+
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
+          console.log('article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
           //var $next = (nextSlide) ? slick.$slides.eq(nextSlide) : slick.$slides.eq(0);
           //var activeStory = $next.parents('.st-wrapper.slick-active');
           //console.log('as bc');
            //console.log($next.find('video'));
-
           rewindVideos($storiesRendered);
+
+
           $nextItem = slick.$slides.eq(nextSlide);
-
-
-
-
-
+          $slides = slick.$slides;
+          //console.log($nextItem.addClass('st-current'))
+          $slides.removeClass('st-active');
+          $nextItem.addClass('st-active');
           if (!!$nextItem.find('video').length) {
-            console.log('as bc V');
-
-
+            console.log('video item founded');
             //$next.find('video')[0].currentTime = 0;
             $nextItem.find('video')[0].play();
           }
-
       });
 
       $el.on('afterChange', function(ev, slick, nextSlide){
         ev.stopPropagation();
         ev.preventDefault();
-        $nextItem = slick.$slides.eq(nextSlide);
-        $nextItem.addClass('slick-active').addClass('slick-current');
+        //$nextItem = slick.$slides.eq(nextSlide);
+        console.log('article slider afterChange')
+        //console.log($nextItem)
+
       });
 
       $slides.on('click', function(ev){
         ev.stopPropagation();
-        console.log('xx');
+        console.log('click next');
         next($el);
       });
       $el.slick({
@@ -194,11 +200,11 @@
       });
     }
 
-    // SLIDER INIT WRAPPER
+    // WRAPPER SLIDER
     var sliderWrapper = function($el, initialSlide){
 
       $el.on("init", function(ev, slick){
-        console.log("w Init");
+        console.log("wrapper slider inti");
         ev.stopPropagation();
         ev.preventDefault();
         setTimeout(function(){
@@ -213,21 +219,41 @@
         initialSlide: initialSlide
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
+        console.log('wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
-        var $nextStoryeSlider =  slick.$slides.eq(nextSlide).find('.slick-slider').slick('slickGoTo', 0);
-        $nextStoryeSlider.slick('slickGoTo', 0);
+
+        var $nextStoryeSlider =  slick.$slides.eq(nextSlide).find('.slick-slider');
+        var $nexItems = $nextStoryeSlider.data('slick').$slides;
+
+        $nextStoryeSlider.slick('init');
+      /*
+        // if else fix for Slick's ignorance for one item
+        if ($nexItems.length === 1) {
+          $nextStoryeSlider.trigger('beforeChange', [$nextStoryeSlider.data('slick'), 0, 0]);
+        }
+        else {
+          $nextStoryeSlider.slick('slickGoTo', 1);
+          $nextStoryeSlider.slick('slickGoTo', 0);
+        }
+*/
+
+
+
+
+
+
       });
       $el.on("afterChange", function(ev, slick, currentSlide){
         ev.stopPropagation();
         ev.preventDefault();
-        console.log( 'wac' );
+        console.log( 'wrap slider afterChange' );
       });
     }
 
     var next = function($childSlider){
       var $childItems = $childSlider[0].slick.$slides;
-      if (!$childItems.last().hasClass('slick-active')) {
+      if (!$childItems.last().hasClass('st-active')) {
         $childSlider.slick('slickNext');
       }
       else {
@@ -238,7 +264,7 @@
     var nextParent = function($childSlider){
       var $parentSlider = $childSlider.parents('.slick-slider');
       var $parentItems = $parentSlider[0].slick.$slides;
-      if (!$parentItems.last().hasClass('slick-current')) {
+      if (!$parentItems.last().hasClass('st-active')) {
         $parentSlider.slick('slickNext');
       }
       else {
@@ -259,7 +285,7 @@
       $('video', $context).each(function(i, vid){
         $(vid).one('timeupdate', function(ev){
           ev.stopPropagation();
-          console.log('v timeupdate')
+          console.log('video timeupdate')
           vid.pause();
           vid.currentTime = 0;
         });

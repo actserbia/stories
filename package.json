@@ -10,6 +10,7 @@
   "license": "GPL",
   "devDependencies": {},
   "dependencies": {
+    "gulp": "^3.9.1",
     "gulp-add-src": "^0.2.0",
     "gulp-concat": "^2.6.1",
     "gulp-declare": "^0.3.0",
