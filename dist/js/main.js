@@ -9,19 +9,13 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 
   return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.program(5, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
 },"3":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
-
-  return "          <h3><a href=\""
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
-    + "\" alt=\"\" target=\"_blank\">"
-    + alias2(alias1(((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1), depth0))
-    + "</a></h3>\n";
-},"5":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "          <h3><a href=\""
-    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
-    + "\" alt=\"\">Yasmina</a></h3>\n";
+  return "          <h3>"
+    + container.escapeExpression(container.lambda(((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1), depth0))
+    + "</h3>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "          <h3>Yasmina</h3>\n";
 },"7":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=depth0 != null ? depth0 : {};
 
@@ -29,7 +23,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.imgSrc : depth0),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vKaltura : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n";
+    + "\n\n\n";
 },"8":function(container,depth0,helpers,partials,data) {
     return "          <div class='item item-img'>\n\n              <img src=\""
     + container.escapeExpression(container.lambda((depth0 != null ? depth0.imgSrc : depth0), depth0))
@@ -48,6 +42,26 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     + "\" type=\""
     + alias2(alias1((depth0 != null ? depth0.type : depth0), depth0))
     + "\">\n";
+},"13":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1;
+
+  return ((stack1 = (helpers.isEqual || (depth0 && depth0.isEqual) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.type : depth0),"external_url",{"name":"isEqual","hash":{},"fn":container.program(14, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"14":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1;
+
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1),{"name":"if","hash":{},"fn":container.program(15, data, 0, blockParams, depths),"inverse":container.program(17, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
+},"15":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <a class=\"st-more\" href=\""
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
+    + "\" alt=\"\" target=\"_blank\">\n          اكتشفي المزيد\n        </a>\n";
+},"17":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <a class=\"st-more\" href=\""
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
+    + "\" alt=\"\">\n          اكتشفي المزيد\n        </a>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
@@ -63,7 +77,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n  </div>\n\n\n  <div class='st-main'>\n    <div class='st-slider'>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    </div>\n  </div>\n\n  <div class=\"storie-ui-left\"></div>\n  <div class=\"storie-ui-right\"></div>\n\n</div>\n";
+    + "    </div>\n  </div>\n\n  <div class='st-footer'>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(13, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "  </div>\n\n</div>\n";
 },"useData":true,"useDepths":true});
 'use strict'
 
@@ -237,7 +253,7 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         mobileFirst: true,
         fade: true,
         swipe: false,
-        rtl: true
+        rtl: false
       });
     }
 
@@ -258,7 +274,7 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         adaptiveHeight: false,
         mobileFirst: true,
         initialSlide: initialSlide,
-        rtl: true,
+        rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
         console.log('wrap slider beforeChange :')

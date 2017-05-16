@@ -6,11 +6,7 @@
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
-
 .all-st-wrapper{
-  &.opened {
-    display: block;
-  }
   display: none;
   position: fixed;
   width: 100%;
@@ -19,23 +15,25 @@
   top: 0;
   left: 0;
   background-color: black;
+  direction: ltr;
+  &.opened {
+    display: block;
+  }
   &>.slick-list {
     height: 100%;
     &>.slick-track {
       height: 100%;
     }
   }
-
+  .slick-slide {
+    // FORCE LTR
+    float: left;
+  }
   .st-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
-
-
-
     color: white;
-
-
     .st-header {
       $headerHeight: 50px;
       height: $headerHeight;
@@ -45,8 +43,6 @@
       left: 0;
       width: 100%;
       z-index: 9999;
-
-
       .st-close {
         display: block;
         width: $headerHeight;
@@ -59,7 +55,6 @@
           @include center;
         }
       }
-
       .st-logo {
         float: left;
         position: relative;
@@ -73,21 +68,17 @@
             fill: red;
           }
         }
-
       }
       h3 {
         float: left;
         margin: 0;
-        a {
-          color: white;
-          font-size: 12px;
-          height: $headerHeight;
-          line-height: $headerHeight;
-          text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
-        }
+        color: white;
+        font-size: 12px;
+        height: $headerHeight;
+        line-height: $headerHeight;
+        //text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
       }
     }
-
     .st-main {
       position: relative;
       width: 100%;
@@ -116,6 +107,19 @@
         }
       }
     }
-
+    .st-footer {
+      a {
+        $height: 50px;
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: $height;
+        line-height: $height;
+        width: 100%;
+        text-align: center;
+        color: gray;
+      }
+    }
   }
 }

@@ -26,9 +26,9 @@
     {{#each elements}}
       {{#isEqual this.type 'external_url'}}
         {{#if ../sponsors.0.data.name}}
-          <h3><a href="{{this.data.url}}" alt="" target="_blank">{{../sponsors.0.data.name}}</a></h3>
+          <h3>{{../sponsors.0.data.name}}</h3>
         {{else}}
-          <h3><a href="{{this.data.url}}" alt="">Yasmina</a></h3>
+          <h3>Yasmina</h3>
         {{/if}}
       {{/isEqual}}
     {{/each}}
@@ -60,11 +60,26 @@
           </div>
         {{/if}}
 
+
+
       {{/each}}
     </div>
   </div>
 
-  <div class="storie-ui-left"></div>
-  <div class="storie-ui-right"></div>
+  <div class='st-footer'>
+    {{#each elements}}
+    {{#isEqual this.type 'external_url'}}
+      {{#if ../sponsors.0.data.name}}
+        <a class="st-more" href="{{this.data.url}}" alt="" target="_blank">
+          اكتشفي المزيد
+        </a>
+      {{else}}
+        <a class="st-more" href="{{this.data.url}}" alt="">
+          اكتشفي المزيد
+        </a>
+      {{/if}}
+    {{/isEqual}}
+    {{/each}}
+  </div>
 
 </div>

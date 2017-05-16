@@ -170,7 +170,7 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         mobileFirst: true,
         fade: true,
         swipe: false,
-        rtl: true
+        rtl: false
       });
     }
 
@@ -191,7 +191,7 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         adaptiveHeight: false,
         mobileFirst: true,
         initialSlide: initialSlide,
-        rtl: true,
+        rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
         console.log('wrap slider beforeChange :')
