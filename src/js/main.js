@@ -1,5 +1,13 @@
 'use strict'
 
+// HANDLEBAR
+Handlebars.registerHelper('isEqual', function(p1, p2, options) {
+  if(p1 === p2){
+    return options.fn(this);
+  }
+  return options.inverse(this);
+});
+
 ;(function($){
   $.fn.stories = function(set) {
 
@@ -285,6 +293,7 @@
       $.when.apply($, mediaElementSetters).always(function(){
         var storiesRendered = "";
         $.each(storiesAll, function(i, story){
+          console.log(story);
           storiesRendered += stories.templates.storie(story, true);
         });
         $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
@@ -299,7 +308,7 @@
     $clickers.one('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
-      $this = $(this);
+      var $this = $(this);
       var $brand = $this.parent();
       var storieIndex = $brands.index($brand);
       if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened') || !$storiesRendered.hasClass('st-ready')) {
@@ -330,6 +339,9 @@
         $(window).trigger('resize');
       });
     });
+
+
+
 
     console.log('stories applied');
 
