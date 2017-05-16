@@ -2,18 +2,20 @@
 
 div.header-stories {
   position: relative;
-  height: 57px;
-  padding-top: 3px;
+  overflow: visible;
+  height: auto;
+  .header-story:nth-child(5) ~ .header-story {
+      display: none;
+   }
   .header-story {
     width: 20%;
-    height: 100%;
-    overflow: hidden;
     text-align: center;
     position: relative;
     float: left;
+    margin-top: 3px;
+    margin-bottom: 4px;
     .story-logo {
-      height: 74%;
-      overflow: hidden;
+      height: 40px;
       position: relative;
       display: block;
       svg {
@@ -23,11 +25,19 @@ div.header-stories {
       }
     }
     .story-sponsor-name {
-      height: 20%;
       display: block;
-      font-size: 0.45rem;
-      overflow: hidden;
+      font-size: 0.5rem;
+      line-height: 0.65rem;
       position: relative;
+      width: 80%;
+      margin: 0 10%;
+      vertical-align: middle;
+      //outline: 1px solid blue;
     }
+  }
+  &:after { // CLEARFIX
+    content: "";
+    display: table;
+    clear: both;
   }
 }

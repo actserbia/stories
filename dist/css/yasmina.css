@@ -106,18 +106,19 @@
 
 div.header-stories {
   position: relative;
-  height: 57px;
-  padding-top: 3px; }
+  overflow: visible;
+  height: auto; }
+  div.header-stories .header-story:nth-child(5) ~ .header-story {
+    display: none; }
   div.header-stories .header-story {
     width: 20%;
-    height: 100%;
-    overflow: hidden;
     text-align: center;
     position: relative;
-    float: left; }
+    float: left;
+    margin-top: 3px;
+    margin-bottom: 4px; }
     div.header-stories .header-story .story-logo {
-      height: 74%;
-      overflow: hidden;
+      height: 40px;
       position: relative;
       display: block; }
       div.header-stories .header-story .story-logo svg {
@@ -130,8 +131,14 @@ div.header-stories {
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%); }
     div.header-stories .header-story .story-sponsor-name {
-      height: 20%;
       display: block;
-      font-size: 0.45rem;
-      overflow: hidden;
-      position: relative; }
+      font-size: 0.5rem;
+      line-height: 0.65rem;
+      position: relative;
+      width: 80%;
+      margin: 0 10%;
+      vertical-align: middle; }
+  div.header-stories:after {
+    content: "";
+    display: table;
+    clear: both; }
