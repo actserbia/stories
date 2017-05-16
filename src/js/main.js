@@ -1,3 +1,5 @@
+'use strict'
+
 ;(function($){
   $.fn.stories = function(set) {
 
@@ -16,69 +18,6 @@
     var timeoutNext = 0;
     var timeoutNextT = 3000;
     //var storiesData = [];
-
-    // PRELOADER
-    $(document).ready(function(ev){
-      getAllData().always(function(storiesAjaxed){
-        var mediaElementSetters = [];
-        $.each(storiesAjaxed, function(i, storieAjaxed){
-          var storie = storieAjaxed[0];
-          storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
-          storie.storieIndex = i;
-          storiesAll.push(storie);
-          mediaElementSetters.push(setArticleMedia(storie));
-        });
-        $.when.apply($, mediaElementSetters).always(function(){
-          var storiesRendered = "";
-          $.each(storiesAll, function(i, story){
-            storiesRendered += stories.templates.storie(story, true);
-          });
-          $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
-          $('body').append($storiesRendered);
-          $storiesRendered.addClass('st-ready');
-        });
-      });
-    });
-
-
-    // STARTER
-    $clickers.one('click', function(ev){
-      ev.preventDefault();
-      ev.stopPropagation();
-      $this = $(this);
-      var $brand = $this.parent();
-      var storieIndex = $brands.index($brand);
-      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened') || !$storiesRendered.hasClass('st-ready')) {
-        return;
-      }
-      prePlayVideos($storiesRendered);
-      $storiesRendered.addClass('opened');
-      $('.st-slider', $storiesRendered).each(function(i, slider){
-        sliderArticle( $(slider) );
-      });
-      sliderWrapper($storiesRendered, storieIndex);
-      $storiesRendered.find('.st-close').on('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        destroy();
-      });
-      $clickers.off('click');
-      /// reinitialize
-      $clickers.on('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        $this = $(this);
-        var $brand = $this.parent();
-        var storieIndex = $brands.index($brand);
-        console.log(storieIndex);
-        $storiesRendered.addClass('opened');
-        $storiesRendered.slick('slickGoTo', storieIndex, true);
-        $(window).trigger('resize');
-      });
-    });
-
-
-
 
     // REQUEST SINGLE ARTICLE
     var request = function(apiUrl, unique){
@@ -333,7 +272,67 @@
       });
     };
 
+    // PRELOADER
+    getAllData().always(function(storiesAjaxed){
+      var mediaElementSetters = [];
+      $.each(storiesAjaxed, function(i, storieAjaxed){
+        var storie = storieAjaxed[0];
+        storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
+        storie.storieIndex = i;
+        storiesAll.push(storie);
+        mediaElementSetters.push(setArticleMedia(storie));
+      });
+      $.when.apply($, mediaElementSetters).always(function(){
+        var storiesRendered = "";
+        $.each(storiesAll, function(i, story){
+          storiesRendered += stories.templates.storie(story, true);
+        });
+        $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
+        $('body').append($storiesRendered);
+        $storiesRendered.addClass('st-ready');
+      });
+    });
+
+
+
+    // STARTER
+    $clickers.one('click', function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      $this = $(this);
+      var $brand = $this.parent();
+      var storieIndex = $brands.index($brand);
+      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened') || !$storiesRendered.hasClass('st-ready')) {
+        return;
+      }
+      prePlayVideos($storiesRendered);
+      $storiesRendered.addClass('opened');
+      $('.st-slider', $storiesRendered).each(function(i, slider){
+        sliderArticle( $(slider) );
+      });
+      sliderWrapper($storiesRendered, storieIndex);
+      $storiesRendered.find('.st-close').on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        destroy();
+      });
+      $clickers.off('click');
+      /// reinitialize
+      $clickers.on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        $this = $(this);
+        var $brand = $this.parent();
+        var storieIndex = $brands.index($brand);
+        console.log(storieIndex);
+        $storiesRendered.addClass('opened');
+        $storiesRendered.slick('slickGoTo', storieIndex, true);
+        $(window).trigger('resize');
+      });
+    });
+
     console.log('stories applied');
 
   };
+
 })(jQuery);

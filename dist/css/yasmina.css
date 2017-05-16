@@ -91,7 +91,9 @@
             display: block; }
 
 div.header-stories {
-  position: relative; }
+  position: relative;
+  height: 57px;
+  padding-top: 3px; }
   div.header-stories .header-story {
     width: 20%;
     height: 100%;
@@ -99,13 +101,13 @@ div.header-stories {
     text-align: center;
     position: relative; }
     div.header-stories .header-story .story-logo {
-      height: 70%;
+      height: 74%;
       overflow: hidden;
       position: relative;
       display: block; }
       div.header-stories .header-story .story-logo svg {
-        max-width: 80%;
-        max-height: 80%;
+        max-width: 90%;
+        max-height: 90%;
         position: absolute;
         top: 50%;
         left: 50%;
