@@ -69,15 +69,15 @@
   <div class='st-footer'>
     {{#each elements}}
     {{#isEqual this.type 'external_url'}}
-      {{#if ../sponsors.0.data.name}}
-        <a class="st-more" href="{{this.data.url}}" alt="" target="_blank">
-          اكتشفي المزيد
-        </a>
-      {{else}}
+      {{#isLinkInternal this.data.url}}
         <a class="st-more" href="{{this.data.url}}" alt="">
           اكتشفي المزيد
         </a>
-      {{/if}}
+      {{else}}
+        <a class="st-more" href="{{this.data.url}}" alt="" target="_blank">
+          اكتشفي المزيد
+        </a>
+      {{/isLinkInternal}}
     {{/isEqual}}
     {{/each}}
   </div>

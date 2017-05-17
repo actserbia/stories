@@ -1,13 +1,5 @@
 'use strict'
 
-// HANDLEBAR
-Handlebars.registerHelper('isEqual', function(p1, p2, options) {
-  if(p1 === p2){
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
-
 ;(function($){
   $.fn.stories = function(set) {
 
@@ -128,8 +120,8 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
           console.log('article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
-          rewindVideos($storiesRendered);
           clearTimeout(timeoutNext);
+          rewindVideos($storiesRendered);
           $nextItem = slick.$slides.eq(nextSlide);
           $slides = slick.$slides;
           $slides.removeClass('st-active');
@@ -146,14 +138,12 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
           }
       });
 
-      $el.on('afterChange', function(ev, slick, nextSlide){
-        ev.stopPropagation();
-        ev.preventDefault();
-        //$nextItem = slick.$slides.eq(nextSlide);
-        console.log('article slider afterChange --')
-        //console.log($nextItem)
-
-      });
+      //$el.on('afterChange', function(ev, slick, nextSlide){
+      //  ev.stopPropagation();
+      //  ev.preventDefault();
+      //  //$nextItem = slick.$slides.eq(nextSlide);
+      //  console.log('article slider afterChange --')
+      //});
 
       $slides.on('click', function(ev){
         ev.stopPropagation();
@@ -197,8 +187,9 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         console.log('wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
+        clearTimeout(timeoutNext);
         var $nextStoryeSlider =  slick.$slides.eq(nextSlide).find('.slick-slider');
-        var $nexItems = $nextStoryeSlider.data('slick').$slides;
+        //var $nexItems = $nextStoryeSlider.data('slick').$slides;
         var nextCurrent = $nextStoryeSlider.slick('slickCurrentSlide');
         // if/else fix for Slick's ignorance:: for one item; for 0 GoTo 0;
         if (nextCurrent === 0 ) {
@@ -208,11 +199,11 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
           $nextStoryeSlider.slick('slickGoTo', 0);
         }
       });
-      $el.on("afterChange", function(ev, slick, currentSlide){
-        ev.stopPropagation();
-        ev.preventDefault();
-        console.log( 'wrap slider afterChange' );
-      });
+      //$el.on("afterChange", function(ev, slick, currentSlide){
+      //  ev.stopPropagation();
+      //  ev.preventDefault();
+      //  console.log( 'wrap slider afterChange' );
+      //});
     }
 
     var next = function($childSlider){
@@ -291,9 +282,9 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         mediaElementSetters.push(setArticleMedia(storie));
       });
       $.when.apply($, mediaElementSetters).always(function(){
+        console.log("AJAXing done");
         var storiesRendered = "";
         $.each(storiesAll, function(i, story){
-          console.log(story);
           storiesRendered += stories.templates.storie(story, true);
         });
         $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
@@ -305,7 +296,7 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
 
 
     // STARTER
-    $clickers.one('click', function(ev){
+    $clickers.on('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
       var $this = $(this);
@@ -320,31 +311,45 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         sliderArticle( $(slider) );
       });
       sliderWrapper($storiesRendered, storieIndex);
-      $storiesRendered.find('.st-close').on('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        destroy();
-      });
-      $clickers.off('click');
-      /// reinitialize
-      $clickers.on('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        $this = $(this);
-        var $brand = $this.parent();
-        var storieIndex = $brands.index($brand);
-        console.log(storieIndex);
-        $storiesRendered.addClass('opened');
-        $storiesRendered.slick('slickGoTo', storieIndex, true);
-        $(window).trigger('resize');
-      });
+        $storiesRendered.find('.st-close').on('click', function(ev){
+          ev.preventDefault();
+          ev.stopPropagation();
+          destroy();
+        });
+        $clickers.off('click');
+        /// reinitialize
+        $clickers.on('click', function(ev){
+          ev.preventDefault();
+          ev.stopPropagation();
+          $this = $(this);
+          var $brand = $this.parent();
+          var storieIndex = $brands.index($brand);
+          console.log(storieIndex);
+          $storiesRendered.addClass('opened');
+          $storiesRendered.slick('slickGoTo', storieIndex, true);
+          $(window).trigger('resize');
+        });
+    });
+
+
+    // HANDLEBAR HELPERS
+    Handlebars.registerHelper('isEqual', function(p1, p2, options) {
+      if(p1 === p2){
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    });
+    Handlebars.registerHelper('isLinkInternal', function(link, options) {
+      var urlLink = new URL(link);
+      if(urlLink.hostname===location.hostname){
+        return options.fn(this);
+      }
+      return options.inverse(this);
     });
 
 
 
-
     console.log('stories applied');
-
   };
 
 })(jQuery);

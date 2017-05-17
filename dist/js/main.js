@@ -1,95 +1,4 @@
-this["stories"] = this["stories"] || {};
-this["stories"]["templates"] = this["stories"]["templates"] || {};
-this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1;
-
-  return ((stack1 = (helpers.isEqual || (depth0 && depth0.isEqual) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.type : depth0),"external_url",{"name":"isEqual","hash":{},"fn":container.program(2, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"2":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1;
-
-  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.program(5, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
-},"3":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1;
-
-  return "          <h3>"
-    + container.escapeExpression(container.lambda(((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1), depth0))
-    + "</h3>\n";
-},"5":function(container,depth0,helpers,partials,data) {
-    return "          <h3>Yasmina</h3>\n";
-},"7":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=depth0 != null ? depth0 : {};
-
-  return "\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.imgSrc : depth0),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vKaltura : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n\n\n";
-},"8":function(container,depth0,helpers,partials,data) {
-    return "          <div class='item item-img'>\n\n              <img src=\""
-    + container.escapeExpression(container.lambda((depth0 != null ? depth0.imgSrc : depth0), depth0))
-    + "\" alt=\"\">\n\n          </div>\n";
-},"10":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "          <div class='item item-kaltura'>\n\n              <video poster=\"\" playsinline>\n"
-    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.vKaltura : depth0)) != null ? stack1.sources : stack1),{"name":"each","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "              </video>\n\n          </div>\n";
-},"11":function(container,depth0,helpers,partials,data) {
-    var alias1=container.lambda, alias2=container.escapeExpression;
-
-  return "                  <source src=\""
-    + alias2(alias1((depth0 != null ? depth0.src : depth0), depth0))
-    + "\" type=\""
-    + alias2(alias1((depth0 != null ? depth0.type : depth0), depth0))
-    + "\">\n";
-},"13":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1;
-
-  return ((stack1 = (helpers.isEqual || (depth0 && depth0.isEqual) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.type : depth0),"external_url",{"name":"isEqual","hash":{},"fn":container.program(14, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
-},"14":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1;
-
-  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1),{"name":"if","hash":{},"fn":container.program(15, data, 0, blockParams, depths),"inverse":container.program(17, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
-},"15":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "        <a class=\"st-more\" href=\""
-    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
-    + "\" alt=\"\" target=\"_blank\">\n          اكتشفي المزيد\n        </a>\n";
-},"17":function(container,depth0,helpers,partials,data) {
-    var stack1;
-
-  return "        <a class=\"st-more\" href=\""
-    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
-    + "\" alt=\"\">\n          اكتشفي المزيد\n        </a>\n";
-},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
-    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
-
-  return "<div class=\"st-wrapper\">\n\n  <div class=\"st-header\">\n\n    <span class=\"st-close\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 50 50\">\n        <line x1=\"0\" y1=\"0\" x2=\"50\" y2=\"50\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n        <line x1=\"0\" y1=\"50\" x2=\"50\" y2=\"0\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n      </svg>\n    </span>\n\n    <span class=\"st-logo\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n        <defs>\n          <clipPath id=\"s-clipCircle-"
-    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
-    + "\">\n            <circle r=\"50\" cx=\"50\" cy=\"50\"></circle>\n          </clipPath>\n        </defs>\n        <polygon points=\"0,0 0,100 100,100 100,0\" clip-path=\"url(#s-clipCircle-"
-    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
-    + ")\" style=\"fill:white;\" />\n        <image x=\"0\" y=\"0\" clip-path=\"url(#s-clipCircle-"
-    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
-    + ")\" width=\"100\" height=\"100\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\""
-    + alias4(((helper = (helper = helpers.logo || (depth0 != null ? depth0.logo : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"logo","hash":{},"data":data}) : helper)))
-    + "\"></image>\n        <circle cx=\"50\" cy=\"50\" r=\"46\" stroke=\"white\" stroke-width=\"3\" fill=\"none\"></circle>\n        <circle cx=\"50\" cy=\"50\" r=\"49\" stroke=\"#9e914c\" stroke-width=\"3\" fill=\"none\"></circle>\n      </svg>\n    </span>\n\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n  </div>\n\n\n  <div class='st-main'>\n    <div class='st-slider'>\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "    </div>\n  </div>\n\n  <div class='st-footer'>\n"
-    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(13, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "  </div>\n\n</div>\n";
-},"useData":true,"useDepths":true});
 'use strict'
-
-// HANDLEBAR
-Handlebars.registerHelper('isEqual', function(p1, p2, options) {
-  if(p1 === p2){
-    return options.fn(this);
-  }
-  return options.inverse(this);
-});
 
 ;(function($){
   $.fn.stories = function(set) {
@@ -211,8 +120,8 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
           console.log('article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
-          rewindVideos($storiesRendered);
           clearTimeout(timeoutNext);
+          rewindVideos($storiesRendered);
           $nextItem = slick.$slides.eq(nextSlide);
           $slides = slick.$slides;
           $slides.removeClass('st-active');
@@ -229,14 +138,12 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
           }
       });
 
-      $el.on('afterChange', function(ev, slick, nextSlide){
-        ev.stopPropagation();
-        ev.preventDefault();
-        //$nextItem = slick.$slides.eq(nextSlide);
-        console.log('article slider afterChange --')
-        //console.log($nextItem)
-
-      });
+      //$el.on('afterChange', function(ev, slick, nextSlide){
+      //  ev.stopPropagation();
+      //  ev.preventDefault();
+      //  //$nextItem = slick.$slides.eq(nextSlide);
+      //  console.log('article slider afterChange --')
+      //});
 
       $slides.on('click', function(ev){
         ev.stopPropagation();
@@ -280,8 +187,9 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         console.log('wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
+        clearTimeout(timeoutNext);
         var $nextStoryeSlider =  slick.$slides.eq(nextSlide).find('.slick-slider');
-        var $nexItems = $nextStoryeSlider.data('slick').$slides;
+        //var $nexItems = $nextStoryeSlider.data('slick').$slides;
         var nextCurrent = $nextStoryeSlider.slick('slickCurrentSlide');
         // if/else fix for Slick's ignorance:: for one item; for 0 GoTo 0;
         if (nextCurrent === 0 ) {
@@ -291,11 +199,11 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
           $nextStoryeSlider.slick('slickGoTo', 0);
         }
       });
-      $el.on("afterChange", function(ev, slick, currentSlide){
-        ev.stopPropagation();
-        ev.preventDefault();
-        console.log( 'wrap slider afterChange' );
-      });
+      //$el.on("afterChange", function(ev, slick, currentSlide){
+      //  ev.stopPropagation();
+      //  ev.preventDefault();
+      //  console.log( 'wrap slider afterChange' );
+      //});
     }
 
     var next = function($childSlider){
@@ -374,9 +282,9 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         mediaElementSetters.push(setArticleMedia(storie));
       });
       $.when.apply($, mediaElementSetters).always(function(){
+        console.log("AJAXing done");
         var storiesRendered = "";
         $.each(storiesAll, function(i, story){
-          console.log(story);
           storiesRendered += stories.templates.storie(story, true);
         });
         $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
@@ -388,7 +296,7 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
 
 
     // STARTER
-    $clickers.one('click', function(ev){
+    $clickers.on('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
       var $this = $(this);
@@ -403,31 +311,129 @@ Handlebars.registerHelper('isEqual', function(p1, p2, options) {
         sliderArticle( $(slider) );
       });
       sliderWrapper($storiesRendered, storieIndex);
-      $storiesRendered.find('.st-close').on('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        destroy();
-      });
-      $clickers.off('click');
-      /// reinitialize
-      $clickers.on('click', function(ev){
-        ev.preventDefault();
-        ev.stopPropagation();
-        $this = $(this);
-        var $brand = $this.parent();
-        var storieIndex = $brands.index($brand);
-        console.log(storieIndex);
-        $storiesRendered.addClass('opened');
-        $storiesRendered.slick('slickGoTo', storieIndex, true);
-        $(window).trigger('resize');
-      });
+        $storiesRendered.find('.st-close').on('click', function(ev){
+          ev.preventDefault();
+          ev.stopPropagation();
+          destroy();
+        });
+        $clickers.off('click');
+        /// reinitialize
+        $clickers.on('click', function(ev){
+          ev.preventDefault();
+          ev.stopPropagation();
+          $this = $(this);
+          var $brand = $this.parent();
+          var storieIndex = $brands.index($brand);
+          console.log(storieIndex);
+          $storiesRendered.addClass('opened');
+          $storiesRendered.slick('slickGoTo', storieIndex, true);
+          $(window).trigger('resize');
+        });
+    });
+
+
+    // HANDLEBAR HELPERS
+    Handlebars.registerHelper('isEqual', function(p1, p2, options) {
+      if(p1 === p2){
+        return options.fn(this);
+      }
+      return options.inverse(this);
+    });
+    Handlebars.registerHelper('isLinkInternal', function(link, options) {
+      var urlLink = new URL(link);
+      if(urlLink.hostname===location.hostname){
+        return options.fn(this);
+      }
+      return options.inverse(this);
     });
 
 
 
-
     console.log('stories applied');
-
   };
 
 })(jQuery);
+
+this["stories"] = this["stories"] || {};
+this["stories"]["templates"] = this["stories"]["templates"] || {};
+this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1;
+
+  return ((stack1 = (helpers.isEqual || (depth0 && depth0.isEqual) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.type : depth0),"external_url",{"name":"isEqual","hash":{},"fn":container.program(2, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"2":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1;
+
+  return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : {},((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0, blockParams, depths),"inverse":container.program(5, data, 0, blockParams, depths),"data":data})) != null ? stack1 : "");
+},"3":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1;
+
+  return "          <h3>"
+    + container.escapeExpression(container.lambda(((stack1 = ((stack1 = ((stack1 = (depths[1] != null ? depths[1].sponsors : depths[1])) != null ? stack1["0"] : stack1)) != null ? stack1.data : stack1)) != null ? stack1.name : stack1), depth0))
+    + "</h3>\n";
+},"5":function(container,depth0,helpers,partials,data) {
+    return "          <h3>Yasmina</h3>\n";
+},"7":function(container,depth0,helpers,partials,data) {
+    var stack1, alias1=depth0 != null ? depth0 : {};
+
+  return "\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.imgSrc : depth0),{"name":"if","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n"
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.vKaltura : depth0),{"name":"if","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n\n\n";
+},"8":function(container,depth0,helpers,partials,data) {
+    return "          <div class='item item-img'>\n\n              <img src=\""
+    + container.escapeExpression(container.lambda((depth0 != null ? depth0.imgSrc : depth0), depth0))
+    + "\" alt=\"\">\n\n          </div>\n";
+},"10":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "          <div class='item item-kaltura'>\n\n              <video poster=\"\" playsinline>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.vKaltura : depth0)) != null ? stack1.sources : stack1),{"name":"each","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "              </video>\n\n          </div>\n";
+},"11":function(container,depth0,helpers,partials,data) {
+    var alias1=container.lambda, alias2=container.escapeExpression;
+
+  return "                  <source src=\""
+    + alias2(alias1((depth0 != null ? depth0.src : depth0), depth0))
+    + "\" type=\""
+    + alias2(alias1((depth0 != null ? depth0.type : depth0), depth0))
+    + "\">\n";
+},"13":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = (helpers.isEqual || (depth0 && depth0.isEqual) || helpers.helperMissing).call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.type : depth0),"external_url",{"name":"isEqual","hash":{},"fn":container.program(14, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+},"14":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return ((stack1 = (helpers.isLinkInternal || (depth0 && depth0.isLinkInternal) || helpers.helperMissing).call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1),{"name":"isLinkInternal","hash":{},"fn":container.program(15, data, 0),"inverse":container.program(17, data, 0),"data":data})) != null ? stack1 : "");
+},"15":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <a class=\"st-more\" href=\""
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
+    + "\" alt=\"\">\n          اكتشفي المزيد\n        </a>\n";
+},"17":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "        <a class=\"st-more\" href=\""
+    + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.url : stack1), depth0))
+    + "\" alt=\"\" target=\"_blank\">\n          اكتشفي المزيد\n        </a>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<div class=\"st-wrapper\">\n\n  <div class=\"st-header\">\n\n    <span class=\"st-close\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 50 50\">\n        <line x1=\"0\" y1=\"0\" x2=\"50\" y2=\"50\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n        <line x1=\"0\" y1=\"50\" x2=\"50\" y2=\"0\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n      </svg>\n    </span>\n\n    <span class=\"st-logo\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n        <defs>\n          <clipPath id=\"s-clipCircle-"
+    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
+    + "\">\n            <circle r=\"50\" cx=\"50\" cy=\"50\"></circle>\n          </clipPath>\n        </defs>\n        <polygon points=\"0,0 0,100 100,100 100,0\" clip-path=\"url(#s-clipCircle-"
+    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
+    + ")\" style=\"fill:white;\" />\n        <image x=\"0\" y=\"0\" clip-path=\"url(#s-clipCircle-"
+    + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
+    + ")\" width=\"100\" height=\"100\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\""
+    + alias4(((helper = (helper = helpers.logo || (depth0 != null ? depth0.logo : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"logo","hash":{},"data":data}) : helper)))
+    + "\"></image>\n        <circle cx=\"50\" cy=\"50\" r=\"46\" stroke=\"white\" stroke-width=\"3\" fill=\"none\"></circle>\n        <circle cx=\"50\" cy=\"50\" r=\"49\" stroke=\"#9e914c\" stroke-width=\"3\" fill=\"none\"></circle>\n      </svg>\n    </span>\n\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "\n  </div>\n\n\n  <div class='st-main'>\n    <div class='st-slider'>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "    </div>\n  </div>\n\n  <div class='st-footer'>\n"
+    + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(13, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "  </div>\n\n</div>\n";
+},"useData":true,"useDepths":true});
