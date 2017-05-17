@@ -118,7 +118,8 @@
         line-height: $height;
         width: 100%;
         text-align: center;
-        color: gray;
+        color: #eeeeee;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, .5);
       }
     }
   }

@@ -142,7 +142,8 @@ a {
       line-height: 50px;
       width: 100%;
       text-align: center;
-      color: gray; }
+      color: #eeeeee;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5); }
 
 div.header-stories {
   position: relative;
@@ -182,3 +183,8 @@ div.header-stories {
     content: "";
     display: table;
     clear: both; }
+
+.st-footer a {
+  font-family: "Noto Kufi Arabic", "Noto Serif", serif;
+  text-decoration: underline;
+  font-size: 13px; }
