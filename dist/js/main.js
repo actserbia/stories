@@ -31,7 +31,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 },"10":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "          <div class='item item-kaltura'>\n\n              <video poster=\"\" playsinline>\n"
+  return "          <div class='item item-kaltura'>\n\n              <video poster=\"\" preload playsinline>\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},((stack1 = (depth0 != null ? depth0.vKaltura : depth0)) != null ? stack1.sources : stack1),{"name":"each","hash":{},"fn":container.program(11, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "              </video>\n\n          </div>\n";
 },"11":function(container,depth0,helpers,partials,data) {
@@ -82,19 +82,24 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     + "  </div>\n\n</div>\n";
 },"useData":true,"useDepths":true});
 'use strict'
-
 ;(function($){
+
+
+  var _stories = {};
+  _stories.log = function(){};
+  if (location.hash==="#debug"||location.hash==="#debug-st"){
+    _stories.log = console.log;
+  }
+
+
   $.fn.stories = function(set) {
 
     set = set || {};
-
     var $brands = $(this).children('div');
     var $clickers = $("a", $(this));
-
     //var apiPrefix = "http://192.168.0.111:8085/";
     //var apiPrefix = "src/test-api";
     var apiPrefix = set.apiPrefix || "";
-
     var apiUrls = [];
     var storiesAll = [];
     var $storiesRendered = $();
@@ -102,9 +107,10 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     var timeoutNextT = 3000;
     //var storiesData = [];
 
+
     // REQUEST SINGLE ARTICLE
     var request = function(apiUrl, unique){
-      console.log(apiUrl);
+      _stories.log(apiUrl);
       return $.ajax({
         url: apiPrefix + apiUrl,
         dataType : "jsonp",
@@ -114,6 +120,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         cache: true,
       });
     }
+
 
     // REQUEST ALL ARTICLES
     var getAllData = function(){
@@ -132,6 +139,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       });
       return dfd.promise();
     }
+
 
     // REQUEST AND SET MEDIA IMAGE
     var setImgSrc = function (obj) {
@@ -173,6 +181,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       return dfd.promise();
     }
 
+
     // SET ARTICLE MEDIA
     var setArticleMedia = function(storieData){
       var dfd = $.Deferred();
@@ -193,6 +202,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       return dfd.promise();
     };
 
+
     // ARTICLE SLIDER
     var sliderArticle = function($el){
       var $slides = $el.find('.item');
@@ -200,7 +210,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         slick.$slider.data('slick', slick);
       });
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
-          console.log('article slider beforeChange')
+          _stories.log('article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
           clearTimeout(timeoutNext);
@@ -209,28 +219,24 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           $slides = slick.$slides;
           $slides.removeClass('st-active');
           $nextItem.addClass('st-active');
+          // video kaltura
           if ($nextItem.hasClass('item-kaltura')) {
-            console.log('video item founded');
+            _stories.log('video item founded');
             $nextItem.find('video')[0].play();
           }
+          // igmage
           else if ($nextItem.hasClass('item-img')) {
-            console.log('image item founded');
+            _stories.log('image item founded');
             timeoutNext = setTimeout(function(){
               next($el);
             }, timeoutNextT);
           }
       });
 
-      //$el.on('afterChange', function(ev, slick, nextSlide){
-      //  ev.stopPropagation();
-      //  ev.preventDefault();
-      //  //$nextItem = slick.$slides.eq(nextSlide);
-      //  console.log('article slider afterChange --')
-      //});
 
       $slides.on('click', function(ev){
         ev.stopPropagation();
-        console.log('click next');
+        _stories.log('CLICK next');
         next($el);
       });
       $('video', $slides).on('ended', function(){
@@ -247,11 +253,12 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       });
     }
 
+
     // WRAPPER SLIDER
     var sliderWrapper = function($el, initialSlide){
 
       $el.on("init", function(ev, slick){
-        console.log("wrapper slider inti");
+        _stories.log("wrapper slider inti");
         ev.stopPropagation();
         ev.preventDefault();
         setTimeout(function(){
@@ -267,7 +274,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
-        console.log('wrap slider beforeChange :')
+        _stories.log('wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
         clearTimeout(timeoutNext);
@@ -282,12 +289,8 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           $nextStoryeSlider.slick('slickGoTo', 0);
         }
       });
-      //$el.on("afterChange", function(ev, slick, currentSlide){
-      //  ev.stopPropagation();
-      //  ev.preventDefault();
-      //  console.log( 'wrap slider afterChange' );
-      //});
     }
+
 
     var next = function($childSlider){
       var $childItems = $childSlider[0].slick.$slides;
@@ -298,6 +301,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         nextParent($childSlider);
       }
     };
+
 
     var nextParent = function($childSlider){
       var $wrapperSlider = $childSlider.parents('.slick-slider');
@@ -310,49 +314,36 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       }
     };
 
+
     var destroy = function(){
       $storiesRendered.removeClass('opened');
       clearTimeout(timeoutNext);
       rewindVideos($storiesRendered);
-      /*
-      console.log('destroy');
-      $storiesRendered.removeClass('opened');
-      rewindVideos($storiesRendered);
-      clearTimeout(timeoutNext);
-      $storiesRendered.find('.st-slider').each(function(i,storieSlider){
-        $(storieSlider).slick('unslick');
-        $(storieSlider).off();
-        console.log('article slider destoyed');
-      });
-      $storiesRendered.slick('unslick');
-      $storiesRendered.off();
-
-      $('.item', $storiesRendered).off();
-      $('video', $storiesRendered).off();
-
-      console.log('wrapper slider destoyed');
-      */
     }
+
 
     // PREPLAY VIDEOS TO FIX AUTOPLAY
     var prePlayVideos = function($context){
       $('video', $context).each(function(i, vid){
         $(vid).one('timeupdate', function(ev){
           ev.stopPropagation();
-          console.log('video timeupdate')
+          _stories.log('video '+ i +' timeupdate, t='+vid.currentTime);
           vid.pause();
-          vid.currentTime = 0;
+          vid.currentTime = 0.1; // fix
         });
         vid.play();
       });
     };
 
+
     var rewindVideos = function($context){
       $('video', $context).each(function(i, video){
+        $(video).addClass('st-playing');
         video.pause();
         video.currentTime = 0;
       });
     };
+
 
     // PRELOADER
     getAllData().always(function(storiesAjaxed){
@@ -365,7 +356,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         mediaElementSetters.push(setArticleMedia(storie));
       });
       $.when.apply($, mediaElementSetters).always(function(){
-        console.log("AJAXing done");
+        _stories.log("AJAXing done");
         var storiesRendered = "";
         $.each(storiesAll, function(i, story){
           storiesRendered += stories.templates.storie(story, true);
@@ -375,7 +366,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         $storiesRendered.addClass('st-ready');
       });
     });
-
 
 
     // STARTER
@@ -393,25 +383,26 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       $('.st-slider', $storiesRendered).each(function(i, slider){
         sliderArticle( $(slider) );
       });
+      _stories.log("Starter first: " + storieIndex);
       sliderWrapper($storiesRendered, storieIndex);
-        $storiesRendered.find('.st-close').on('click', function(ev){
-          ev.preventDefault();
-          ev.stopPropagation();
-          destroy();
-        });
-        $clickers.off('click');
-        /// reinitialize
-        $clickers.on('click', function(ev){
-          ev.preventDefault();
-          ev.stopPropagation();
-          $this = $(this);
-          var $brand = $this.parent();
-          var storieIndex = $brands.index($brand);
-          console.log(storieIndex);
-          $storiesRendered.addClass('opened');
-          $storiesRendered.slick('slickGoTo', storieIndex, true);
-          $(window).trigger('resize');
-        });
+      $storiesRendered.find('.st-close').on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        destroy();
+      });
+      $clickers.off('click');
+      /// reinitialize
+      $clickers.on('click', function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        $this = $(this);
+        var $brand = $this.parent();
+        var storieIndex = $brands.index($brand);
+        _stories.log("Starter restart: " + storieIndex);
+        $storiesRendered.addClass('opened');
+        $storiesRendered.slick('slickGoTo', storieIndex, true);
+        $(window).trigger('resize');
+      });
     });
 
 
@@ -431,8 +422,10 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     });
 
 
+    _stories.log('stories applied');
 
-    console.log('stories applied');
+
   };
+
 
 })(jQuery);
