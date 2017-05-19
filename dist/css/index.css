@@ -48,7 +48,7 @@ a {
   left: 0;
   background-color: black;
   direction: ltr; }
-  .all-st-wrapper.opened {
+  .all-st-wrapper.st-opened {
     display: block; }
   .all-st-wrapper > .slick-list {
     height: 100%; }

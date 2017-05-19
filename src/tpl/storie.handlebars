@@ -51,7 +51,7 @@
         {{#if this.vKaltura}}
           <div class='item item-kaltura'>
 
-              <video poster="" preload playsinline>
+              <video poster="" preload="none" playsinline>
                 {{#each this.vKaltura.sources}}
                   <source src="{{this.src}}" type="{{this.type}}">
                 {{/each}}

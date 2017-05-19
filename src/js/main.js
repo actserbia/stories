@@ -1,3 +1,18 @@
+/*
+*
+* Author: Diwanee :: Aleksandar Veljkovic :: coa.develop@gmail.com
+*
+* LIFE CICLE
+* 1. Ajax
+* 2. Render
+*   -- user click
+* 3. Preplay
+* 4a. Opened
+* 4b. Closed
+*
+*/
+
+
 'use strict'
 ;(function($){
 
@@ -19,7 +34,7 @@
     var apiPrefix = set.apiPrefix || "";
     var apiUrls = [];
     var storiesAll = [];
-    var $storiesRendered = $();
+    var $storiesRendered = $("<div class='all-st-wrapper'></div>");
     var timeoutNext = 0;
     var timeoutNextT = 3000;
     //var storiesData = [];
@@ -27,7 +42,7 @@
 
     // REQUEST SINGLE ARTICLE
     var request = function(apiUrl, unique){
-      _stories.log(apiUrl);
+      _stories.log("STORIES :: " + "requesting: " + apiUrl);
       return $.ajax({
         url: apiPrefix + apiUrl,
         dataType : "jsonp",
@@ -127,7 +142,7 @@
         slick.$slider.data('slick', slick);
       });
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
-          _stories.log('article slider beforeChange')
+          _stories.log("STORIES :: " + 'article slider beforeChange')
           ev.stopPropagation();
           ev.preventDefault();
           clearTimeout(timeoutNext);
@@ -138,12 +153,12 @@
           $nextItem.addClass('st-active');
           // video kaltura
           if ($nextItem.hasClass('item-kaltura')) {
-            _stories.log('video item founded');
+            _stories.log("STORIES :: " + 'video item founded');
             $nextItem.find('video')[0].play();
           }
           // igmage
           else if ($nextItem.hasClass('item-img')) {
-            _stories.log('image item founded');
+            _stories.log("STORIES :: " + 'image item founded');
             timeoutNext = setTimeout(function(){
               next($el);
             }, timeoutNextT);
@@ -153,7 +168,7 @@
 
       $slides.on('click', function(ev){
         ev.stopPropagation();
-        _stories.log('CLICK next');
+        _stories.log("STORIES :: " + 'CLICK next');
         next($el);
       });
       $('video', $slides).on('ended', function(){
@@ -175,7 +190,7 @@
     var sliderWrapper = function($el, initialSlide){
 
       $el.on("init", function(ev, slick){
-        _stories.log("wrapper slider inti");
+        _stories.log("STORIES :: " + "wrapper slider inti");
         ev.stopPropagation();
         ev.preventDefault();
         setTimeout(function(){
@@ -191,7 +206,7 @@
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
-        _stories.log('wrap slider beforeChange :')
+        _stories.log("STORIES :: " + 'wrap slider beforeChange :')
         ev.stopPropagation();
         ev.preventDefault();
         clearTimeout(timeoutNext);
@@ -233,22 +248,29 @@
 
 
     var destroy = function(){
-      $storiesRendered.removeClass('opened');
+      $storiesRendered.removeClass('st-opened');
       clearTimeout(timeoutNext);
       rewindVideos($storiesRendered);
     }
 
 
     // PREPLAY VIDEOS TO FIX AUTOPLAY
-    var prePlayVideos = function($context){
+    var prePlayVideos = function($context, storieIndex){
+      var deferreds = [];
       $('video', $context).each(function(i, vid){
+        var dfd = $.Deferred();
+        deferreds.push(dfd);
         $(vid).one('timeupdate', function(ev){
           ev.stopPropagation();
-          _stories.log('video '+ i +' timeupdate, t='+vid.currentTime);
           vid.pause();
           vid.currentTime = 0.1; // fix
+          _stories.log("STORIES :: " + 'video '+ i +' timeupdate, t='+vid.currentTime);
+          dfd.resolve();
         });
         vid.play();
+      });
+      $.when.apply($, deferreds).then(function(){
+        $storiesRendered.trigger('preplayed', storieIndex);
       });
     };
 
@@ -273,54 +295,61 @@
         mediaElementSetters.push(setArticleMedia(storie));
       });
       $.when.apply($, mediaElementSetters).always(function(){
-        _stories.log("AJAXing done");
+        _stories.log("STORIES :: " + "AJAXing done");
         var storiesRendered = "";
         $.each(storiesAll, function(i, story){
           storiesRendered += stories.templates.storie(story, true);
         });
-        $storiesRendered = $("<div class='all-st-wrapper'>"+storiesRendered+"</div>");
+        $storiesRendered.append(storiesRendered);
         $('body').append($storiesRendered);
-        $storiesRendered.addClass('st-ready');
+        $storiesRendered.addClass('st-rendered');
       });
     });
 
 
     // STARTER
-    $clickers.on('click', function(ev){
-      ev.preventDefault();
+    $storiesRendered.on('preplayed', function(ev, storieIndex){
       ev.stopPropagation();
-      var $this = $(this);
-      var $brand = $this.parent();
-      var storieIndex = $brands.index($brand);
-      if ($storiesRendered.length < 1 || $storiesRendered.hasClass('opened') || !$storiesRendered.hasClass('st-ready')) {
-        return;
-      }
-      prePlayVideos($storiesRendered);
-      $storiesRendered.addClass('opened');
+      _stories.log("STORIES :: " + 'preplayed, '+ storieIndex);
+      $storiesRendered.addClass('st-opened');
       $('.st-slider', $storiesRendered).each(function(i, slider){
         sliderArticle( $(slider) );
       });
-      _stories.log("Starter first: " + storieIndex);
+      _stories.log("STORIES :: " + "Starter first: " + storieIndex);
       sliderWrapper($storiesRendered, storieIndex);
       $storiesRendered.find('.st-close').on('click', function(ev){
         ev.preventDefault();
         ev.stopPropagation();
         destroy();
       });
-      $clickers.off('click');
       /// reinitialize
+      $clickers.off('click')
       $clickers.on('click', function(ev){
         ev.preventDefault();
         ev.stopPropagation();
         $this = $(this);
         var $brand = $this.parent();
         var storieIndex = $brands.index($brand);
-        _stories.log("Starter restart: " + storieIndex);
-        $storiesRendered.addClass('opened');
+        _stories.log("STORIES :: " + "Starter restart: " + storieIndex);
+        $storiesRendered.addClass('st-opened');
         $storiesRendered.slick('slickGoTo', storieIndex, true);
         $(window).trigger('resize');
       });
     });
+    $clickers.on('click', function(ev){
+      ev.preventDefault();
+      ev.stopPropagation();
+      _stories.log("STORIES :: " + 'CLICK Data');
+      var $this = $(this);
+      var $brand = $this.parent();
+      var storieIndex = $brands.index($brand);
+      if (!$storiesRendered.hasClass('st-rendered') || $storiesRendered.hasClass('st-opened') || $storiesRendered.hasClass('st-preplay')) {
+        return;
+      }
+      $storiesRendered.addClass('st-preplay');
+      prePlayVideos($storiesRendered, storieIndex);
+    });
+
 
 
     // HANDLEBAR HELPERS
@@ -339,7 +368,7 @@
     });
 
 
-    _stories.log('stories applied');
+    _stories.log("STORIES :: " + 'stories applied');
 
 
   };
