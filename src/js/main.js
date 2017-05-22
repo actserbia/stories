@@ -140,6 +140,9 @@
       var $slides = $el.find('.item');
       $el.on('init', function(ev, slick){
         slick.$slider.data('slick', slick);
+        if (slick.slideCount===1) {
+          slick.$slider.parents('.st-wrapper').find(".dots-wrapp").append("<ul class='slick-dots'><li class='slick-active'><span></span></li></ul>");
+        }
       });
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
           _stories.log("STORIES :: " + 'article slider beforeChange')
@@ -159,6 +162,7 @@
           // igmage
           else if ($nextItem.hasClass('item-img')) {
             _stories.log("STORIES :: " + 'image item founded');
+            clearTimeout(timeoutNext)
             timeoutNext = setTimeout(function(){
               next($el);
             }, timeoutNextT);
@@ -175,13 +179,19 @@
         next($el);
       });
       $el.slick({
+        accessibility: false,
         arrows: false,
         infinite: false,
         adaptiveHeight: false,
         mobileFirst: true,
         fade: true,
         swipe: false,
-        rtl: false
+        rtl: false,
+        dots: true,
+        appendDots: $el.parents('.st-wrapper').find('.dots-wrapp'),
+        customPaging: function(slider, i){
+          return "<span></span>";
+        }
       });
     }
 
@@ -198,11 +208,13 @@
         }, 0)
       });
       $el.slick({
+        accessibility: false,
         arrows: false,
         infinite: false,
         adaptiveHeight: false,
         mobileFirst: true,
         initialSlide: initialSlide,
+        dots: false,
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){

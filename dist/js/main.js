@@ -65,7 +65,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
-  return "<div class=\"st-wrapper\">\n\n  <div class=\"st-header\">\n\n    <span class=\"st-close\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 50 50\">\n        <line x1=\"0\" y1=\"0\" x2=\"50\" y2=\"50\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n        <line x1=\"0\" y1=\"50\" x2=\"50\" y2=\"0\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n      </svg>\n    </span>\n\n    <span class=\"st-logo\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n        <defs>\n          <clipPath id=\"s-clipCircle-"
+  return "<div class=\"st-wrapper\">\n\n\n\n\n  <div class=\"st-header\">\n\n    <div class=\"dots-wrapp\"></div>\n    \n    <div class=\"st-close\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 50 50\">\n        <line x1=\"0\" y1=\"0\" x2=\"50\" y2=\"50\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n        <line x1=\"0\" y1=\"50\" x2=\"50\" y2=\"0\" style=\"stroke:rgb(255,255,255);stroke-width:1\" />\n      </svg>\n\n    </div>\n\n    <div class=\"st-logo\">\n      <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\">\n        <defs>\n          <clipPath id=\"s-clipCircle-"
     + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
     + "\">\n            <circle r=\"50\" cx=\"50\" cy=\"50\"></circle>\n          </clipPath>\n        </defs>\n        <polygon points=\"0,0 0,100 100,100 100,0\" clip-path=\"url(#s-clipCircle-"
     + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
@@ -73,7 +73,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     + alias4(((helper = (helper = helpers.storieIndex || (depth0 != null ? depth0.storieIndex : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"storieIndex","hash":{},"data":data}) : helper)))
     + ")\" width=\"100\" height=\"100\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xlink:href=\""
     + alias4(((helper = (helper = helpers.logo || (depth0 != null ? depth0.logo : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"logo","hash":{},"data":data}) : helper)))
-    + "\"></image>\n        <circle cx=\"50\" cy=\"50\" r=\"46\" stroke=\"white\" stroke-width=\"3\" fill=\"none\"></circle>\n        <circle cx=\"50\" cy=\"50\" r=\"49\" stroke=\"#9e914c\" stroke-width=\"3\" fill=\"none\"></circle>\n      </svg>\n    </span>\n\n"
+    + "\"></image>\n        <circle cx=\"50\" cy=\"50\" r=\"46\" stroke=\"white\" stroke-width=\"3\" fill=\"none\"></circle>\n        <circle cx=\"50\" cy=\"50\" r=\"49\" stroke=\"#9e914c\" stroke-width=\"3\" fill=\"none\"></circle>\n      </svg>\n    </div>\n\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n  </div>\n\n\n  <div class='st-main'>\n    <div class='st-slider'>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.elements : depth0),{"name":"each","hash":{},"fn":container.program(7, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -223,6 +223,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       var $slides = $el.find('.item');
       $el.on('init', function(ev, slick){
         slick.$slider.data('slick', slick);
+        if (slick.slideCount===1) {
+          slick.$slider.parents('.st-wrapper').find(".dots-wrapp").append("<ul class='slick-dots'><li class='slick-active'><span></span></li></ul>");
+        }
       });
       $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
           _stories.log("STORIES :: " + 'article slider beforeChange')
@@ -242,6 +245,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           // igmage
           else if ($nextItem.hasClass('item-img')) {
             _stories.log("STORIES :: " + 'image item founded');
+            clearTimeout(timeoutNext)
             timeoutNext = setTimeout(function(){
               next($el);
             }, timeoutNextT);
@@ -258,13 +262,19 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         next($el);
       });
       $el.slick({
+        accessibility: false,
         arrows: false,
         infinite: false,
         adaptiveHeight: false,
         mobileFirst: true,
         fade: true,
         swipe: false,
-        rtl: false
+        rtl: false,
+        dots: true,
+        appendDots: $el.parents('.st-wrapper').find('.dots-wrapp'),
+        customPaging: function(slider, i){
+          return "<span></span>";
+        }
       });
     }
 
@@ -281,11 +291,13 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         }, 0)
       });
       $el.slick({
+        accessibility: false,
         arrows: false,
         infinite: false,
         adaptiveHeight: false,
         mobileFirst: true,
         initialSlide: initialSlide,
+        dots: false,
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){

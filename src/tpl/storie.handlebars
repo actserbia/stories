@@ -1,15 +1,21 @@
 <div class="st-wrapper">
 
+
+
+
   <div class="st-header">
 
-    <span class="st-close">
+    <div class="dots-wrapp"></div>
+    
+    <div class="st-close">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
         <line x1="0" y1="0" x2="50" y2="50" style="stroke:rgb(255,255,255);stroke-width:1" />
         <line x1="0" y1="50" x2="50" y2="0" style="stroke:rgb(255,255,255);stroke-width:1" />
       </svg>
-    </span>
 
-    <span class="st-logo">
+    </div>
+
+    <div class="st-logo">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
         <defs>
           <clipPath id="s-clipCircle-{{storieIndex}}">
@@ -21,13 +27,13 @@
         <circle cx="50" cy="50" r="46" stroke="white" stroke-width="3" fill="none"></circle>
         <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="3" fill="none"></circle>
       </svg>
-    </span>
+    </div>
 
     {{#each elements}}
       {{#isEqual this.type 'external_url'}}
         {{#if ../sponsors.0.data.name}}
           <h3>{{../sponsors.0.data.name}}</h3>
-        {{else}}
+            {{else}}
           <h3>Yasmina</h3>
         {{/if}}
       {{/isEqual}}

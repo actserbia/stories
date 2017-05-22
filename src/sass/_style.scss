@@ -34,22 +34,56 @@
     width: 100%;
     height: 100%;
     color: white;
+    overflow: hidden;
     .st-header {
-      $headerHeight: 50px;
-      height: $headerHeight;
+      $headerHeight: 45px;
+      //height: $headerHeight;
       overflow: hidden;
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       z-index: 9999;
+      &:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      .dots-wrapp { // table
+        //position: absolute;
+        top: 0;
+        left: 0;
+        display: table;
+        width: 100%;
+        border-spacing: 2px 0px;
+        border: 0;
+        padding: 6px 4px 0px 4px;
+        overflow: hidden;
+        position: relative;
+        z-index: 19999;
+        .slick-dots { // tr
+          display: table-row;
+          margin: 0;
+          padding: 0;
+          li { // td
+            height: 2px;
+            display: table-cell;
+            margin: 2px;
+            padding: 0;
+            background-color: white;
+            opacity: 1;
+          }
+          .slick-active ~ li {
+            opacity: .5;
+          }
+        }
+      }
       .st-close {
         display: block;
         width: $headerHeight;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        right: 0;
+        height: $headerHeight;
+        float: right;
+        position: relative;
         svg {
           height: 40%;
           @include center;
@@ -59,11 +93,10 @@
         float: left;
         position: relative;
         width: $headerHeight;
-        height: 100%;
+        height: $headerHeight;
         svg {
           height: 60%;
           @include center;
-
           image {
             fill: red;
           }
