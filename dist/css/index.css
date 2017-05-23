@@ -176,7 +176,8 @@ div.header-stories {
   position: relative;
   overflow: visible;
   height: auto;
-  direction: ltr; }
+  direction: ltr;
+  clear: both; }
   div.header-stories .header-stories-in {
     white-space: nowrap;
     overflow: auto; }
@@ -192,7 +193,7 @@ div.header-stories {
       position: relative;
       float: none;
       margin-top: 3px;
-      margin-bottom: 4px; }
+      margin-bottom: 3px; }
       div.header-stories .header-stories-in .header-story .story-logo {
         height: 40px;
         position: relative;
