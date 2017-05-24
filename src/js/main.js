@@ -16,7 +16,6 @@
 'use strict'
 ;(function($){
 
-
   var _stories = {};
   _stories.log = function(){};
   if (location.hash==="#debug"||location.hash==="#debug-st"){
@@ -26,9 +25,10 @@
 
   $.fn.stories = function(set) {
 
+    var $mainSelector = $(this);
     set = set || {};
-    var $brands = $(this).children('div');
-    var $clickers = $("a", $(this));
+    var $brands = $mainSelector.children('div');
+    var $clickers = $("a", $mainSelector);
     //var apiPrefix = "http://192.168.0.111:8085/";
     //var apiPrefix = "src/test-api";
     var apiPrefix = set.apiPrefix || "";
@@ -39,6 +39,9 @@
     var timeoutNextT = 3000;
     //var storiesData = [];
 
+    var getNameFromClicker = function(index) {
+      return $brands.eq(index).find('a[class*=name]').html();
+    };
 
     // REQUEST SINGLE ARTICLE
     var request = function(apiUrl, unique){
@@ -201,6 +204,7 @@
 
       $el.on("init", function(ev, slick){
         _stories.log("STORIES :: " + "wrapper slider inti");
+        $mainSelector.trigger('stories-view', {index: initialSlide, name: getNameFromClicker(initialSlide)});
         ev.stopPropagation();
         ev.preventDefault();
         setTimeout(function(){
@@ -218,7 +222,10 @@
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
-        _stories.log("STORIES :: " + 'wrap slider beforeChange :')
+        _stories.log("STORIES :: " + 'wrap slider beforeChange')
+        if (currentSlide !== nextSlide) {
+          $mainSelector.trigger('stories-view', {index: nextSlide, name: getNameFromClicker(nextSlide)});
+        }
         ev.stopPropagation();
         ev.preventDefault();
         clearTimeout(timeoutNext);
@@ -321,13 +328,14 @@
 
     // STARTER
     $storiesRendered.on('preplayed', function(ev, storieIndex){
-      ev.stopPropagation();
       _stories.log("STORIES :: " + 'preplayed, '+ storieIndex);
+      _stories.log("STORIES :: " + "Starter first: " + storieIndex);
+      $mainSelector.trigger('stories-click', {index: storieIndex, name: getNameFromClicker(storieIndex)});
+      ev.stopPropagation();
       $storiesRendered.addClass('st-opened');
       $('.st-slider', $storiesRendered).each(function(i, slider){
         sliderArticle( $(slider) );
       });
-      _stories.log("STORIES :: " + "Starter first: " + storieIndex);
       sliderWrapper($storiesRendered, storieIndex);
       $storiesRendered.find('.st-close').on('click', function(ev){
         ev.preventDefault();
@@ -343,6 +351,7 @@
         var $brand = $this.parent();
         var storieIndex = $brands.index($brand);
         _stories.log("STORIES :: " + "Starter restart: " + storieIndex);
+        $mainSelector.trigger('stories-click', {index: storieIndex, name: getNameFromClicker(storieIndex)});
         $storiesRendered.addClass('st-opened');
         $storiesRendered.slick('slickGoTo', storieIndex, true);
         $(window).trigger('resize');

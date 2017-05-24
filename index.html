@@ -160,6 +160,16 @@
   <script src="dist/js/main.js"></script>
   <script>
   $('.header-stories-in').stories({apiPrefix: 'src/test-api'});
+
+  $('.header-stories-in').on('stories-click', function(ev, data){
+    console.log('stories-click');
+    console.log(data);
+  });
+  $('.header-stories-in').on('stories-view', function(ev, data){
+    console.log('stories-view');
+    console.log(data);
+  });
+
   </script>
 
 </body>
