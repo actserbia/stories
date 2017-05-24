@@ -39,8 +39,8 @@
     var timeoutNextT = 3000;
     //var storiesData = [];
 
-    var getNameFromClicker = function(index) {
-      return $brands.eq(index).find('a[class*=name]').html();
+    var getStoryTitle = function(index) {
+      return storiesAll[index].data.article_title;
     };
 
     // REQUEST SINGLE ARTICLE
@@ -204,7 +204,7 @@
 
       $el.on("init", function(ev, slick){
         _stories.log("STORIES :: " + "wrapper slider inti");
-        $mainSelector.trigger('stories-view', {index: initialSlide, name: getNameFromClicker(initialSlide)});
+        $mainSelector.trigger('stories-view', {index: initialSlide, title: getStoryTitle(initialSlide)});
         ev.stopPropagation();
         ev.preventDefault();
         setTimeout(function(){
@@ -224,7 +224,7 @@
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
         _stories.log("STORIES :: " + 'wrap slider beforeChange')
         if (currentSlide !== nextSlide) {
-          $mainSelector.trigger('stories-view', {index: nextSlide, name: getNameFromClicker(nextSlide)});
+          $mainSelector.trigger('stories-view', {index: nextSlide, title: getStoryTitle(nextSlide)});
         }
         ev.stopPropagation();
         ev.preventDefault();
@@ -330,7 +330,7 @@
     $storiesRendered.on('preplayed', function(ev, storieIndex){
       _stories.log("STORIES :: " + 'preplayed, '+ storieIndex);
       _stories.log("STORIES :: " + "Starter first: " + storieIndex);
-      $mainSelector.trigger('stories-click', {index: storieIndex, name: getNameFromClicker(storieIndex)});
+      $mainSelector.trigger('stories-click', {index: storieIndex, title: getStoryTitle(storieIndex)});
       ev.stopPropagation();
       $storiesRendered.addClass('st-opened');
       $('.st-slider', $storiesRendered).each(function(i, slider){
@@ -351,7 +351,7 @@
         var $brand = $this.parent();
         var storieIndex = $brands.index($brand);
         _stories.log("STORIES :: " + "Starter restart: " + storieIndex);
-        $mainSelector.trigger('stories-click', {index: storieIndex, name: getNameFromClicker(storieIndex)});
+        $mainSelector.trigger('stories-click', {index: storieIndex, title: getStoryTitle(storieIndex)});
         $storiesRendered.addClass('st-opened');
         $storiesRendered.slick('slickGoTo', storieIndex, true);
         $(window).trigger('resize');
