@@ -249,18 +249,30 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           else if ($nextItem.hasClass('item-img')) {
             _stories.log("STORIES :: " + 'image item founded');
             clearTimeout(timeoutNext)
-            timeoutNext = setTimeout(function(){
-              next($el);
-            }, timeoutNextT);
+            //timeoutNext = setTimeout(function(){
+            //  next($el);
+            //}, timeoutNextT);
           }
       });
 
 
       $slides.on('click', function(ev){
         ev.stopPropagation();
+
+        var viewPortW = window.innerWidth;
+        var posX = ev.clientX;
+        var aspect = 0.33;
+        if ( posX < (aspect*viewPortW) ) {
+          prev($el);
+        }
+        else {
+          next($el);
+        }
         _stories.log("STORIES :: " + 'CLICK next');
-        next($el);
       });
+
+
+
       $('video', $slides).on('ended', function(){
         next($el);
       });
@@ -336,6 +348,15 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       }
     };
 
+    var prev = function($childSlider){
+      var $childItems = $childSlider[0].slick.$slides;
+      if (!$childItems.first().hasClass('st-active')) {
+        $childSlider.slick('slickPrev');
+      }
+      else {
+        prevParent($childSlider);
+      }
+    };
 
     var nextParent = function($childSlider){
       var $wrapperSlider = $childSlider.parents('.slick-slider');
@@ -348,6 +369,13 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       }
     };
 
+    var prevParent = function($childSlider){
+      var $wrapperSlider = $childSlider.parents('.slick-slider');
+      var $parentItems = $wrapperSlider[0].slick.$slides;
+      if (!$parentItems.first().hasClass('slick-current')) {
+        $wrapperSlider.slick('slickPrev');
+      }
+    };
 
     var destroy = function(){
       $storiesRendered.removeClass('st-opened');
