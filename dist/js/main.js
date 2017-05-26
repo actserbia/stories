@@ -249,9 +249,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           else if ($nextItem.hasClass('item-img')) {
             _stories.log("STORIES :: " + 'image item founded');
             clearTimeout(timeoutNext)
-            //timeoutNext = setTimeout(function(){
-            //  next($el);
-            //}, timeoutNextT);
+            timeoutNext = setTimeout(function(){
+              next($el);
+            }, timeoutNextT);
           }
       });
 

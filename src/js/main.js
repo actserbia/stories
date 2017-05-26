@@ -166,9 +166,9 @@
           else if ($nextItem.hasClass('item-img')) {
             _stories.log("STORIES :: " + 'image item founded');
             clearTimeout(timeoutNext)
-            //timeoutNext = setTimeout(function(){
-            //  next($el);
-            //}, timeoutNextT);
+            timeoutNext = setTimeout(function(){
+              next($el);
+            }, timeoutNextT);
           }
       });
 
