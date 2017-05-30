@@ -100,10 +100,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 
   $.fn.stories = function(set) {
 
-    var $mainSelector = $(this);
     set = set || {};
-    var $brands = $mainSelector.children('div');
-    var $clickers = $("a", $mainSelector);
+    var $eventColector = set.$eventColector || $(document);
+    var $brands = $(this);
     //var apiPrefix = "http://192.168.0.111:8085/";
     //var apiPrefix = "src/test-api";
     var apiPrefix = set.apiPrefix || "";
@@ -138,7 +137,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       var requests = [];
       var _arguments;
       $brands.each(function(i, o){
-        var href = $(o).find('a').eq(0).attr('href');
+        var href = $(o).attr('href');
         apiUrls[i] = href;
       });
       $.each(apiUrls, function(i, o){
@@ -291,7 +290,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 
       $el.on("init", function(ev, slick){
         _stories.log("STORIES :: " + "wrapper slider inti");
-        $mainSelector.trigger('stories-view', {index: initialSlide, title: getStoryTitle(initialSlide)});
+        $eventColector.trigger('stories-view', {index: initialSlide, title: getStoryTitle(initialSlide)});
         ev.stopPropagation();
         ev.preventDefault();
         setTimeout(function(){
@@ -311,7 +310,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
         _stories.log("STORIES :: " + 'wrap slider beforeChange')
         if (currentSlide !== nextSlide) {
-          $mainSelector.trigger('stories-view', {index: nextSlide, title: getStoryTitle(nextSlide)});
+          $eventColector.trigger('stories-view', {index: nextSlide, title: getStoryTitle(nextSlide)});
         }
         ev.stopPropagation();
         ev.preventDefault();
@@ -433,7 +432,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     $storiesRendered.on('preplayed', function(ev, storieIndex){
       _stories.log("STORIES :: " + 'preplayed, '+ storieIndex);
       _stories.log("STORIES :: " + "Starter first: " + storieIndex);
-      $mainSelector.trigger('stories-click', {index: storieIndex, title: getStoryTitle(storieIndex)});
+      $eventColector.trigger('stories-click', {index: storieIndex, title: getStoryTitle(storieIndex)});
       ev.stopPropagation();
       $storiesRendered.addClass('st-opened');
       $('.st-slider', $storiesRendered).each(function(i, slider){
@@ -446,26 +445,26 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         destroy();
       });
       /// reinitialize
-      $clickers.off('click')
-      $clickers.on('click', function(ev){
+      $brands.off('click')
+      $brands.on('click', function(ev){
         ev.preventDefault();
         ev.stopPropagation();
         $this = $(this);
-        var $brand = $this.parent();
+        var $brand = $this;
         var storieIndex = $brands.index($brand);
         _stories.log("STORIES :: " + "Starter restart: " + storieIndex);
-        $mainSelector.trigger('stories-click', {index: storieIndex, title: getStoryTitle(storieIndex)});
+        $eventColector.trigger('stories-click', {index: storieIndex, title: getStoryTitle(storieIndex)});
         $storiesRendered.addClass('st-opened');
         $storiesRendered.slick('slickGoTo', storieIndex, true);
         $(window).trigger('resize');
       });
     });
-    $clickers.on('click', function(ev){
+    $brands.on('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
       _stories.log("STORIES :: " + 'CLICK Data');
       var $this = $(this);
-      var $brand = $this.parent();
+      var $brand = $this;
       var storieIndex = $brands.index($brand);
       if (!$storiesRendered.hasClass('st-rendered') || $storiesRendered.hasClass('st-opened') || $storiesRendered.hasClass('st-preplay')) {
         return;
