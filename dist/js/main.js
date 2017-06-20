@@ -177,7 +177,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         'callback': function(data){
           var sources = [];
           $.each(data.sources, function(i,o){
-            if (o.type === 'video/h264' && (/(a.mp4)/).test(o.src) && !o.isOriginal) {
+            if (o.type === 'video/h264' && (/(.mp4)/).test(o.src) && !o.isOriginal) {
               data.sources[i].type = 'video/mp4';
               sources.push(  data.sources[i] );
             }
