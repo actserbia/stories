@@ -92,10 +92,26 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
 ;(function($){
 
   var _stories = {};
+
   _stories.log = function(){};
   if (location.hash==="#debug"||location.hash==="#debug-st"){
     _stories.log = console.log;
   }
+
+  // handlebars helpers
+  Handlebars.registerHelper('isEqual', function(p1, p2, options) {
+    if(p1 === p2){
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
+  Handlebars.registerHelper('isLinkInternal', function(link, options) {
+    var urlLink = new URL(link);
+    if(urlLink.hostname===location.hostname){
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 
 
   $.fn.stories = function(set) {
@@ -113,6 +129,13 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     var timeoutNextT = 3000;
     //var storiesData = [];
 
+
+    /*
+    *
+    *  R E Q U E S T S  /  MEDIA SETTERS
+    *
+    */
+
     var getStoryTitle = function(index) {
       return storiesAll[index].data.article_title;
     };
@@ -129,7 +152,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         cache: true,
       });
     }
-
 
     // REQUEST ALL ARTICLES
     var getAllData = function(){
@@ -149,7 +171,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       return dfd.promise();
     }
 
-
     // REQUEST AND SET MEDIA IMAGE
     var setImgSrc = function (obj) {
       var dfd = $.Deferred();
@@ -167,6 +188,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       dfd.resolve(obj);
       return dfd.promise();
     }
+
     // REQUEST AND SET MEDIA KALTURA VIDEO
     var setKalturaSrcs = function(obj){
       var dfd = $.Deferred();
@@ -190,7 +212,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       return dfd.promise();
     }
 
-
     // SET ARTICLE MEDIA
     var setArticleMedia = function(storieData){
       var dfd = $.Deferred();
@@ -211,6 +232,12 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       return dfd.promise();
     };
 
+
+    /*
+    *
+    *  S L I D E R S
+    *
+    */
 
     // ARTICLE SLIDER
     var sliderArticle = function($el){
@@ -245,8 +272,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
             }, timeoutNextT);
           }
       });
-
-
       $slides.on('click', function(ev){
         ev.stopPropagation();
 
@@ -261,9 +286,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         }
         _stories.log("STORIES :: " + 'CLICK next');
       });
-
-
-
       $('video', $slides).on('ended', function(){
         next($el);
       });
@@ -283,7 +305,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         }
       });
     }
-
 
     // WRAPPER SLIDER
     var sliderWrapper = function($el, initialSlide){
@@ -308,6 +329,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
+        setHashSilently(storiesAll[nextSlide].stUrl);
         _stories.log("STORIES :: " + 'wrap slider beforeChange')
         if (currentSlide !== nextSlide) {
           $eventColector.trigger('stories-view', {index: nextSlide, title: getStoryTitle(nextSlide)});
@@ -327,7 +349,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         }
       });
     }
-
 
     var next = function($childSlider){
       var $childItems = $childSlider[0].slick.$slides;
@@ -375,6 +396,12 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     }
 
 
+    /*
+    *
+    *  V I D E O   H E L P E R S
+    *
+    */
+
     // PREPLAY VIDEOS TO FIX AUTOPLAY
     var prePlayVideos = function($context, storieIndex){
       var deferreds = [];
@@ -395,7 +422,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       });
     };
 
-
+    // REWIND ALL VIDEOS
     var rewindVideos = function($context){
       $('video', $context).each(function(i, video){
         $(video).addClass('st-playing');
@@ -405,13 +432,20 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
     };
 
 
-    // PRELOADER
+    /*
+    *
+    *  R U N E R S
+    *
+    */
+
+    // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
     getAllData().always(function(storiesAjaxed){
       var mediaElementSetters = [];
       $.each(storiesAjaxed, function(i, storieAjaxed){
         var storie = storieAjaxed[0];
         storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
         storie.storieIndex = i;
+        storie.stUrl = $brands.eq(i).attr('href');
         storiesAll.push(storie);
         mediaElementSetters.push(setArticleMedia(storie));
       });
@@ -426,6 +460,26 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         $storiesRendered.addClass('st-rendered');
       });
     });
+
+
+    function setHashSilently(hash, history){
+      hasher.changed.active = false; //disable changed signal
+      if (history) {
+        hasher.setHash(hash);
+      }
+      else {
+        hasher.replaceHash(hash);
+      }
+      hasher.changed.active = true; //re-enable signal
+    }
+
+    function handleChanges(newHash, oldHash){
+      //console.log(newHash);
+    }
+    hasher.changed.add(handleChanges); //add hash change listener
+    hasher.initialized.add(handleChanges); //add initialized listener (to grab initial value in case it is already set)
+    hasher.init(); //initialize hasher (start listening for history changes)
+
 
 
     // STARTER
@@ -446,7 +500,9 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       });
       /// reinitialize
       $brands.off('click')
+      hasher.setHash("#")
       $brands.on('click', function(ev){
+        hasher.setHash("#")
         ev.preventDefault();
         ev.stopPropagation();
         $this = $(this);
@@ -459,6 +515,8 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         $(window).trigger('resize');
       });
     });
+
+
     $brands.on('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
@@ -471,23 +529,6 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
       }
       $storiesRendered.addClass('st-preplay');
       prePlayVideos($storiesRendered, storieIndex);
-    });
-
-
-
-    // HANDLEBAR HELPERS
-    Handlebars.registerHelper('isEqual', function(p1, p2, options) {
-      if(p1 === p2){
-        return options.fn(this);
-      }
-      return options.inverse(this);
-    });
-    Handlebars.registerHelper('isLinkInternal', function(link, options) {
-      var urlLink = new URL(link);
-      if(urlLink.hostname===location.hostname){
-        return options.fn(this);
-      }
-      return options.inverse(this);
     });
 
 

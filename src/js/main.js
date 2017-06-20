@@ -17,10 +17,26 @@
 ;(function($){
 
   var _stories = {};
+
   _stories.log = function(){};
   if (location.hash==="#debug"||location.hash==="#debug-st"){
     _stories.log = console.log;
   }
+
+  // handlebars helpers
+  Handlebars.registerHelper('isEqual', function(p1, p2, options) {
+    if(p1 === p2){
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
+  Handlebars.registerHelper('isLinkInternal', function(link, options) {
+    var urlLink = new URL(link);
+    if(urlLink.hostname===location.hostname){
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
 
 
   $.fn.stories = function(set) {
@@ -38,6 +54,13 @@
     var timeoutNextT = 3000;
     //var storiesData = [];
 
+
+    /*
+    *
+    *  R E Q U E S T S  /  MEDIA SETTERS
+    *
+    */
+
     var getStoryTitle = function(index) {
       return storiesAll[index].data.article_title;
     };
@@ -54,7 +77,6 @@
         cache: true,
       });
     }
-
 
     // REQUEST ALL ARTICLES
     var getAllData = function(){
@@ -74,7 +96,6 @@
       return dfd.promise();
     }
 
-
     // REQUEST AND SET MEDIA IMAGE
     var setImgSrc = function (obj) {
       var dfd = $.Deferred();
@@ -92,6 +113,7 @@
       dfd.resolve(obj);
       return dfd.promise();
     }
+
     // REQUEST AND SET MEDIA KALTURA VIDEO
     var setKalturaSrcs = function(obj){
       var dfd = $.Deferred();
@@ -115,7 +137,6 @@
       return dfd.promise();
     }
 
-
     // SET ARTICLE MEDIA
     var setArticleMedia = function(storieData){
       var dfd = $.Deferred();
@@ -136,6 +157,12 @@
       return dfd.promise();
     };
 
+
+    /*
+    *
+    *  S L I D E R S
+    *
+    */
 
     // ARTICLE SLIDER
     var sliderArticle = function($el){
@@ -170,8 +197,6 @@
             }, timeoutNextT);
           }
       });
-
-
       $slides.on('click', function(ev){
         ev.stopPropagation();
 
@@ -186,9 +211,6 @@
         }
         _stories.log("STORIES :: " + 'CLICK next');
       });
-
-
-
       $('video', $slides).on('ended', function(){
         next($el);
       });
@@ -208,7 +230,6 @@
         }
       });
     }
-
 
     // WRAPPER SLIDER
     var sliderWrapper = function($el, initialSlide){
@@ -233,6 +254,7 @@
         rtl: false,
       });
       $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
+        setHashSilently(storiesAll[nextSlide].stUrl);
         _stories.log("STORIES :: " + 'wrap slider beforeChange')
         if (currentSlide !== nextSlide) {
           $eventColector.trigger('stories-view', {index: nextSlide, title: getStoryTitle(nextSlide)});
@@ -252,7 +274,6 @@
         }
       });
     }
-
 
     var next = function($childSlider){
       var $childItems = $childSlider[0].slick.$slides;
@@ -300,6 +321,12 @@
     }
 
 
+    /*
+    *
+    *  V I D E O   H E L P E R S
+    *
+    */
+
     // PREPLAY VIDEOS TO FIX AUTOPLAY
     var prePlayVideos = function($context, storieIndex){
       var deferreds = [];
@@ -320,7 +347,7 @@
       });
     };
 
-
+    // REWIND ALL VIDEOS
     var rewindVideos = function($context){
       $('video', $context).each(function(i, video){
         $(video).addClass('st-playing');
@@ -330,13 +357,20 @@
     };
 
 
-    // PRELOADER
+    /*
+    *
+    *  R U N E R S
+    *
+    */
+
+    // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
     getAllData().always(function(storiesAjaxed){
       var mediaElementSetters = [];
       $.each(storiesAjaxed, function(i, storieAjaxed){
         var storie = storieAjaxed[0];
         storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
         storie.storieIndex = i;
+        storie.stUrl = $brands.eq(i).attr('href');
         storiesAll.push(storie);
         mediaElementSetters.push(setArticleMedia(storie));
       });
@@ -351,6 +385,26 @@
         $storiesRendered.addClass('st-rendered');
       });
     });
+
+
+    function setHashSilently(hash, history){
+      hasher.changed.active = false; //disable changed signal
+      if (history) {
+        hasher.setHash(hash);
+      }
+      else {
+        hasher.replaceHash(hash);
+      }
+      hasher.changed.active = true; //re-enable signal
+    }
+
+    function handleChanges(newHash, oldHash){
+      //console.log(newHash);
+    }
+    hasher.changed.add(handleChanges); //add hash change listener
+    hasher.initialized.add(handleChanges); //add initialized listener (to grab initial value in case it is already set)
+    hasher.init(); //initialize hasher (start listening for history changes)
+
 
 
     // STARTER
@@ -371,7 +425,9 @@
       });
       /// reinitialize
       $brands.off('click')
+      hasher.setHash("#")
       $brands.on('click', function(ev){
+        hasher.setHash("#")
         ev.preventDefault();
         ev.stopPropagation();
         $this = $(this);
@@ -384,6 +440,8 @@
         $(window).trigger('resize');
       });
     });
+
+
     $brands.on('click', function(ev){
       ev.preventDefault();
       ev.stopPropagation();
@@ -396,23 +454,6 @@
       }
       $storiesRendered.addClass('st-preplay');
       prePlayVideos($storiesRendered, storieIndex);
-    });
-
-
-
-    // HANDLEBAR HELPERS
-    Handlebars.registerHelper('isEqual', function(p1, p2, options) {
-      if(p1 === p2){
-        return options.fn(this);
-      }
-      return options.inverse(this);
-    });
-    Handlebars.registerHelper('isLinkInternal', function(link, options) {
-      var urlLink = new URL(link);
-      if(urlLink.hostname===location.hostname){
-        return options.fn(this);
-      }
-      return options.inverse(this);
     });
 
 

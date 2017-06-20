@@ -18,6 +18,8 @@
     "jquery": "*",
     "slick.js": "1.5.8",
     "jsSHA": "1.6.0",
-    "handlebars": "^4.0.8"
+    "handlebars": "4.0.8",
+    "js-signals": "1.0.0",
+    "hasher": "1.2.0"
   }
 }
