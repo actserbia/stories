@@ -219,6 +219,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
           elements.push(setKalturaSrcs(o));
         }
         else if (o.type==="video" && o.data.provider==="youtube") {
+          // not implemented 
         }
       });
       $.when.apply($, elements).always(function(x){

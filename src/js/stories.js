@@ -1,15 +1,42 @@
 var _stories = {};
 
+
 _stories.log = function(){};
 if (location.hash==="#debug"||location.hash==="#debug-st"){
   _stories.log = console.log;
 }
 
+
+// PREPLAY VIDEOS TO FIX AUTOPLAY
+_stories.prePlayVideos = function($context, storieIndex){
+  var dfdReturn = $.Deferred();
+  var deferreds = [];
+  $('video', $context).each(function(i, vid){
+    var dfd = $.Deferred();
+    deferreds.push(dfd);
+    $(vid).one('timeupdate', function(ev){
+      ev.stopPropagation();
+      vid.pause();
+      vid.currentTime = 0.1; // fix
+      _stories.log("STORIES :: " + 'video '+ i +' timeupdate, t='+vid.currentTime);
+      dfd.resolve();
+    });
+    vid.play();
+  });
+  $.when.apply($, deferreds).then(function(){
+    _stories.log("STORIES :: " + 'all videos preplayed');
+    dfdReturn.resolve();
+  });
+  _stories.prePlayVideos = function(){};
+  return dfdReturn.promise();
+};
+
+
+
 $.fn.stories = function(set) {
 
-  _public = {};
 
-  $allStWrapper = $(this)
+  $allStWrapper = $(this);
 
   set = set || {};
   var $eventColector = set.$eventColector || $(document);
@@ -24,6 +51,44 @@ $.fn.stories = function(set) {
   var getStoryTitle = function(index){
     return $allStWrapper.find('st-title').eq(index);
   }
+
+
+
+  /*
+  *
+  *  V I D E O   H E L P E R S
+  *
+  */
+
+  // REWIND ALL VIDEOS
+  var rewindVideos = function($context){
+    $('video', $context).each(function(i, video){
+      //$(video).addClass('st-playing');
+      video.pause();
+      video.currentTime = 0;
+      _stories.log("STORIES :: " + 'all videos rewinded');
+    });
+  };
+
+  // VIDEO AUTOPLAY DETECTION -> .CLASS
+  $('video', $allStWrapper).each(function(i, video){
+    var $video = $(video);
+    $video.one('timeupdate', function(){
+      $(this).parent().addClass('st-video-auto');
+      console.log('TIME UPDATE');
+    });
+  });
+
+  // PLAY BUTTON GESTURE -> PREPLAY FOR AUTOPLAY
+  $('.st-play-button', $allStWrapper).one('click', function(ev){
+    ev.preventDefault();
+    ev.stopPropagation();
+    var video = $(this).parent().find('video')[0];
+    $('.st-play-button', $allStWrapper).off('click');
+    _stories.prePlayVideos().always(function(){
+      video.play();
+    });
+  });
 
 
   /*
@@ -193,55 +258,13 @@ $.fn.stories = function(set) {
 
 
 
-  /*
-  *
-  *  V I D E O   H E L P E R S
-  *
-  */
 
-  // PREPLAY VIDEOS TO FIX AUTOPLAY
-  var prePlayVideos = function($context, storieIndex){
-    var dfdReturn = $.Deferred();
-    var deferreds = [];
-
-    $('video', $context).each(function(i, vid){
-      var dfd = $.Deferred();
-      deferreds.push(dfd);
-      $(vid).one('timeupdate', function(ev){
-        ev.stopPropagation();
-        vid.pause();
-        vid.currentTime = 0.1; // fix
-        _stories.log("STORIES :: " + 'video '+ i +' timeupdate, t='+vid.currentTime);
-        dfd.resolve();
-      });
-      vid.play();
-    });
-
-    $.when.apply($, deferreds).then(function(){
-      //$allStWrapper.trigger('preplayed', storieIndex);
-      _stories.log("STORIES :: " + 'all videos preplayed');
-      dfdReturn.resolve();
-    });
-    return dfdReturn.promise();
-  };
-
-  // REWIND ALL VIDEOS
-  var rewindVideos = function($context){
-    $('video', $context).each(function(i, video){
-      $(video).addClass('st-playing');
-      video.pause();
-      video.currentTime = 0;
-      _stories.log("STORIES :: " + 'all videos rewinded');
-    });
-  };
 
   /*
   *
+  * HASH NAVIGATION
   *
   */
-
-  prePlayVideos($allStWrapper).always(function(){
-  });
 
   var setHashSilently = function(hash, history){
     hasher.changed.active = false; //disable changed signal
@@ -279,12 +302,10 @@ $.fn.stories = function(set) {
       $(window).trigger('resize');
     }
   }
-  
+
   hasher.changed.add(hasherOnChange); //add hash change listener
   hasher.initialized.add(hasherOnChange); //add initialized listener (to grab initial value in case it is already set)
   hasher.init(); //initialize hasher (start listening for history changes)
 
-
-  return _public;
 
 };

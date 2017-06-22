@@ -144,6 +144,7 @@
           elements.push(setKalturaSrcs(o));
         }
         else if (o.type==="video" && o.data.provider==="youtube") {
+          // not implemented 
         }
       });
       $.when.apply($, elements).always(function(x){

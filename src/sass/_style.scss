@@ -137,6 +137,19 @@
             height: auto;
             display: block;
           }
+          &.item-kaltura {
+            .st-play-button {
+              @include center;
+              width: 100px;
+              height: 100px;
+              background: transparent url(http://www.yasmina.com/assets/images/mobile-video-play-btn.png) center center no-repeat;
+            }
+          }
+          &.item-kaltura.st-video-auto {
+            .st-play-button {
+              display: none;
+            }
+          }
         }
       }
     }

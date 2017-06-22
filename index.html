@@ -235,6 +235,7 @@
             <img src="http://img.yasmina.com/k8pZITsnWPPuEha6tsGCOHXIFKY=/800x0/smart/harmony-assets-staging.s3.amazonaws.com/image_source/18/03/1803bae0bada42e7e971cc31cae738b142a2f640.jpg" alt="">
           </div>
           <div class="item item-kaltura">
+
             <video poster="" preload="none" playsinline="" >
               <source src='http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_fgaw3juy/flavorId/1_l182nfc6/format/url/protocol/http/a.mp4'
               type="video/mp4">
@@ -242,6 +243,7 @@
               type="video/mp4">
               ...
             </video>
+            <div class="st-play-button"></div>
           </div>
         </div>
       </div>
@@ -278,12 +280,14 @@
       <div class="st-main">
         <div class="st-slider">
           <div class="item item-kaltura">
+
             <video poster="" preload="none" playsinline="">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_fgaw3juy/flavorId/1_l182nfc6/format/url/protocol/http/a.mp4"
               type="video/mp4">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_fgaw3juy/flavorId/1_7bvsw0dd/format/url/protocol/http/a.mp4"
               type="video/mp4">
             </video>
+            <div class="st-play-button"></div>
           </div>
         </div>
       </div>
@@ -323,28 +327,34 @@
             <img src="http://img.yasmina.com/rCsFoGf4mWxOi6RL2mWfpHxBrKo=/800x0/smart/harmony-assets-staging.s3.amazonaws.com/image_source/7c/b3/7cb36fd99f8e234d9c2fae112e606583159e29c8.jpg" alt="">
           </div>
           <div class="item item-kaltura">
+
             <video poster="" preload="none" playsinline="">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_jange48q/flavorId/1_cqyf8w3n/format/url/protocol/http/a.mp4"
               type="video/mp4">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_jange48q/flavorId/1_yepep3jp/format/url/protocol/http/a.mp4"
               type="video/mp4">
             </video>
+            <div class="st-play-button"></div>
           </div>
           <div class="item item-kaltura">
+
             <video poster="" preload="none" playsinline="">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_0mjaw8vg/flavorId/1_o7o67w4r/format/url/protocol/http/a.mp4"
               type="video/mp4">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_0mjaw8vg/flavorId/1_x99xgove/format/url/protocol/http/a.mp4"
               type="video/mp4">
             </video>
+            <div class="st-play-button"></div>
           </div>
           <div class="item item-kaltura">
+
             <video poster="" preload="none" playsinline="">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_oda4klv0/flavorId/1_0mnirrr0/format/url/protocol/http/a.mp4"
               type="video/mp4">
               <source src="http://cdnbakmi.kaltura.com/p/676152/sp/67615200/playManifest/entryId/1_oda4klv0/flavorId/1_a14j2sys/format/url/protocol/http/a.mp4"
               type="video/mp4">
             </video>
+            <div class="st-play-button"></div>
           </div>
         </div>
       </div>
@@ -451,20 +461,37 @@
 
   <script src="bower_components/slick.js/slick/slick.js"></script>
 
+
   <script src="src/js/stories.js"></script>
+
+
   <script>
 
 
   $('.all-st-wrapper').stories({apiPrefix: 'src/test-api', $eventColector: $('.header-stories-in')});
 
-  $('.header-stories-in').on('stories-click', function(ev, data){
-    console.log('ANALYTICS :: stories-click');
-    console.log(data);
-  });
+
   $('.header-stories-in').on('stories-view', function(ev, data){
     console.log('ANALYTICS :: stories-view');
     console.log(data);
   });
+
+
+  $('.header-stories-in > a').on('click', function(ev, data){
+    console.log('ANALYTICS :: stories-click');
+    console.log(data);
+  });
+
+
+  $('.header-stories-in > a').one('click', function(ev){
+    ev.preventDefault();
+    var $this = $(this);
+    _stories.prePlayVideos( $('.all-st-wrapper') ).always(function(){
+      var hash = $this.attr('href');
+      location.hash = hash;
+    });
+  });
+
 
   </script>
 
