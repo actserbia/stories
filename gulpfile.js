@@ -11,7 +11,7 @@ var addsrc = require('gulp-add-src');
 
 var tasks = function(){
   compileSass();
-  compileJS(['src/tpl/*.handlebars'], 'stories', 'src/js/main.js', 'dist/js', "main.js");
+  compileJS(['src/tpl/*.handlebars'], 'stories', ['src/js/stories.js', 'src/js/stories-yasmina.js'], 'dist/js', "stories-yasmina-build.js");
 };
 
 var compileJS = function(srcTpl, namespace, srcJs, destFolder, destFile){
@@ -31,7 +31,7 @@ var compileJS = function(srcTpl, namespace, srcJs, destFolder, destFile){
     .pipe(print(function (filepath) {
       return filepath + " builded!";
     }));
-}
+};
 
 var compileSass = function(){
   return gulp.src('./src/sass/**/*.scss')
@@ -40,7 +40,7 @@ var compileSass = function(){
     .pipe(print(function (filepath) {
             return filepath + " builded!";
     }));
-}
+};
 
 gulp.task('watch', function () {
   tasks();

@@ -1,4 +1,4 @@
-<div class="st-wrapper">
+<div class="st-wrapper" data-designator="{{designator}}">
 
 
 
@@ -53,11 +53,12 @@
         {{#if this.vKaltura}}
           <div class='item item-kaltura'>
 
-              <video poster="" preload="none" playsinline>
+              <video poster="{{this.vKaltura.poster}}/width/480/quality/75/" preload="none" playsinline>
                 {{#each this.vKaltura.sources}}
                   <source src="{{this.src}}" type="{{this.type}}">
                 {{/each}}
               </video>
+              <div class="st-play-button"></div>
 
           </div>
         {{/if}}

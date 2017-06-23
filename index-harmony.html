@@ -35,12 +35,13 @@
     <p>
       Content of the document...... Content of the document...... Content of the document...... Content of the document...... Content of the document...... Content of the document...... Content of the document......
     </p>
-    <nav id="header-stories-wrap">
+    
+        <nav id="header-stories-wrap">
       <div class="header-stories">
         <div class="header-stories-in">
 
-          <div class="header-story" href="/story/test-story-1-1260417">
-            <span class="hrl story-logo" rel="" >
+          <a class="header-story" href="#/story/test-story-1-1260417">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -52,11 +53,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="3" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/test-story-1-1260417" class="story-sponsor-name">chanel</span>
-          </div>
+            <span class="story-sponsor-name">chanel</span>
+          </a>
 
-          <div class="header-story" href="/story/cartier-story-1260447">
-            <span class="hrl story-logo" rel="" >
+          <a class="header-story" href="#/story/cartier-story-1260447">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -68,11 +69,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/cartier-story-1260447" class="story-sponsor-name">cartier</span>
-          </div>
+            <span class="story-sponsor-name">cartier</span>
+          </a>
 
-          <div class="header-story" href="/story/nespresso-story-1260452">
-            <span class="hrl story-logo" rel="" >
+          <a class="header-story" href="#/story/nespresso-story-1260452">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -84,11 +85,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/nespresso-story-1260452" class="story-sponsor-name">nespresso</span>
-          </div>
+            <span class="story-sponsor-name">nespresso</span>
+          </a>
 
-          <div class="header-story" href="/story/vca-story-1260462">
-            <span class="hrl story-logo" rel="">
+          <a class="header-story" href="#/story/vca-story-1260462">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -100,11 +101,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/vca-story-1260462" class="story-sponsor-name">van cleef and arpels</span>
-          </div>
+            <span class="story-sponsor-name">van cleef and arpels</span>
+          </a>
 
-          <div class="header-story" href="/story/louis-vuitton-story-1260457">
-            <span class="hrl story-logo" rel="">
+          <a class="header-story" href="#/story/louis-vuitton-story-1260457">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -116,11 +117,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/louis-vuitton-story-1260457" class="story-sponsor-name">Louis Vuitton</span>
-          </div>
+            <span class="story-sponsor-name">Louis Vuitton</span>
+          </a>
 
-          <div class="header-story" href="/story/test-story-1-1260417">
-            <span class="hrl story-logo" rel="">
+          <a class="header-story" href="#/story/test-story-1-1260417">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -132,8 +133,8 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="3" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/test-story-1-1260417" class="story-sponsor-name">chanel</span>
-          </div>
+            <span class="story-sponsor-name">chanel</span>
+          </a>
 
         </div>
       </div>
@@ -155,15 +156,19 @@
   <script src="bower_components/handlebars/handlebars.runtime.min.js"></script>
 
   <script src="bower_components/js-signals/dist/signals.min.js"></script>
-  <!--script src="bower_components/crossroads.js/dist/crossroads.min.js"></script-->
   <script src="bower_components/hasher/dist/js/hasher.min.js"></script>
   <!-- eofLOCAL -->
 
   <script src="bower_components/slick.js/slick/slick.js"></script>
 
-  <script src="dist/js/main.js"></script>
+  <script src="dist/js/stories-yasmina-build.js"></script>
   <script>
-  $('.header-story').stories({apiPrefix: 'src/test-api', $eventColector: $('.header-stories-in')});
+  //$('.header-story').stories({apiPrefix: 'src/test-api', $eventColector: $('.header-stories-in')});
+  
+  stories({
+    apiPrefix: 'src/test-api', 
+    $eventColector: $('.header-stories-in')
+  });
 
   $('.header-stories-in').on('stories-click', function(ev, data){
     console.log('stories-click');

@@ -40,7 +40,7 @@
         <div class="header-stories-in">
 
           <a class="header-story" href="#/story/test-story-1-1260417">
-            <span class="hrl story-logo" rel="" >
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -52,11 +52,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="3" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/test-story-1-1260417" class="story-sponsor-name">chanel</span>
+            <span class="story-sponsor-name">chanel</span>
           </a>
 
           <a class="header-story" href="#/story/cartier-story-1260447">
-            <span class="hrl story-logo" rel="" >
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -68,11 +68,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/cartier-story-1260447" class="story-sponsor-name">cartier</span>
+            <span class="story-sponsor-name">cartier</span>
           </a>
 
           <a class="header-story" href="#/story/nespresso-story-1260452">
-            <span class="hrl story-logo" rel="" >
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -84,11 +84,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/nespresso-story-1260452" class="story-sponsor-name">nespresso</span>
+            <span class="story-sponsor-name">nespresso</span>
           </a>
 
           <a class="header-story" href="#/story/vca-story-1260462">
-            <span class="hrl story-logo" rel="">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -100,11 +100,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/vca-story-1260462" class="story-sponsor-name">van cleef and arpels</span>
+            <span class="story-sponsor-name">van cleef and arpels</span>
           </a>
 
           <a class="header-story" href="#/story/louis-vuitton-story-1260457">
-            <span class="hrl story-logo" rel="">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -116,11 +116,11 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="2" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/louis-vuitton-story-1260457" class="story-sponsor-name">Louis Vuitton</span>
+            <span class="story-sponsor-name">Louis Vuitton</span>
           </a>
 
           <a class="header-story" href="#/story/test-story-1-1260417">
-            <span class="hrl story-logo" rel="">
+            <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
                   <clipPath id="clipCircle">
@@ -132,7 +132,7 @@
                 <circle cx="50" cy="50" r="49" stroke="#9e914c" stroke-width="3" fill="none"></circle>
               </svg>
             </span>
-            <span href="/story/test-story-1-1260417" class="story-sponsor-name">chanel</span>
+            <span class="story-sponsor-name">chanel</span>
           </a>
 
         </div>
@@ -455,7 +455,6 @@
 
 
   <script src="bower_components/js-signals/dist/signals.min.js"></script>
-  <!--script src="bower_components/crossroads.js/dist/crossroads.min.js"></script-->
   <script src="bower_components/hasher/dist/js/hasher.min.js"></script>
   <!-- eofLOCAL -->
 
@@ -486,10 +485,13 @@
   $('.header-stories-in > a').one('click', function(ev){
     ev.preventDefault();
     var $this = $(this);
-    _stories.prePlayVideos( $('.all-st-wrapper') ).always(function(){
-      var hash = $this.attr('href');
-      location.hash = hash;
-    });
+    try {
+      _stories.prePlayVideos( $('.all-st-wrapper') ).always(function(){
+        var hash = $this.attr('href');
+        location.hash = hash;
+      });
+    }
+    catch(e){}
   });
 
 

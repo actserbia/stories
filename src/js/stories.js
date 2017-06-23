@@ -9,6 +9,7 @@ if (location.hash==="#debug"||location.hash==="#debug-st"){
 
 // PREPLAY VIDEOS TO FIX AUTOPLAY
 _stories.prePlayVideos = function($context, storieIndex){
+  _stories.prePlayVideos = function(){};
   var dfdReturn = $.Deferred();
   var deferreds = [];
   $('video', $context).each(function(i, vid){
@@ -27,7 +28,7 @@ _stories.prePlayVideos = function($context, storieIndex){
     _stories.log("STORIES :: " + 'all videos preplayed');
     dfdReturn.resolve();
   });
-  _stories.prePlayVideos = function(){};
+  
   return dfdReturn.promise();
 };
 
@@ -75,7 +76,6 @@ $.fn.stories = function(set) {
     var $video = $(video);
     $video.one('timeupdate', function(){
       $(this).parent().addClass('st-video-auto');
-      console.log('TIME UPDATE');
     });
   });
 
