@@ -116,7 +116,7 @@
         hasResize: true,
         hasTrim: false,
         isSmart: true,
-        resizeWidth: "640",
+        resizeWidth: "480",
         resizeHeight: "0"
       }});
     var thumbor = new thumborUrlBuilder(thumborConfig);
@@ -159,7 +159,7 @@
       } else if (o.type === "video" && o.data.provider === "kaltura") {
         elements.push(setKalturaSrcs(o));
       } else if (o.type === "video" && o.data.provider === "youtube") {
-        // not implemented 
+        // not implemented
       }
     });
     $.when.apply($, elements).always(function (x) {
@@ -220,7 +220,7 @@
         }
       });
       ///////
-      
+
 
     });
   });
