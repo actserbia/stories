@@ -158,7 +158,7 @@ this["stories"]["templates"]["storie"] = Handlebars.template({"1":function(conta
         hasResize: true,
         hasTrim: false,
         isSmart: true,
-        resizeWidth: "800",
+        resizeWidth: "480",
         resizeHeight: "0"
       }});
       var thumbor = new thumborUrlBuilder(thumborConfig);
