@@ -107,7 +107,7 @@ _stories.prePlayVideos = function($context, storieIndex){
     _stories.log("STORIES :: " + 'all videos preplayed');
     dfdReturn.resolve();
   });
-  
+
   return dfdReturn.promise();
 };
 
@@ -345,6 +345,8 @@ $.fn.stories = function(set) {
   *
   */
 
+  hasher.raw = true;
+
   var setHashSilently = function(hash, history){
     hasher.changed.active = false; //disable changed signal
     if (history) {
@@ -398,8 +400,7 @@ $.fn.stories = function(set) {
  * 2. Render
  *   -- user click
  * 3. Preplay
- * 4a. Opened
- * 4b. Closed
+ * ...
  *
  */
 
@@ -428,8 +429,6 @@ $.fn.stories = function(set) {
 
 
   var $brands = $('.header-story');
-  //var apiPrefix = "http://192.168.0.111:8085/";
-  //var apiPrefix = "src/test-api";
   var apiPrefix = "";
   var apiUrls = [];
   var storiesAll = [];
@@ -439,21 +438,33 @@ $.fn.stories = function(set) {
 
 
 
-
-
+  // SETTING data('href')
   if ($('html').hasClass('ua-type-mobile')) {
     $brands.each(function (i, o) {
       var $o = $(o);
-      //$o.attr('href', "#" + dce64($o.attr('rel')));
       $o.data('href', dce64($o.attr('rel')));
     });
   }
 
 
-
-
-
-
+  // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
+  if (!!location.hash && location.hash.toLowerCase().indexOf("/story/") !== -1) {
+    var hashHref = location.hash.replace(/^[#]/, "");
+    var exist = false;
+    $brands.each(function(i, brand){
+      $brand = $(brand);
+      if(  $brand.data('href') === hashHref  ) {
+        exits = true;
+      }
+    });
+    if (!exist) {
+      var $extraStory = $("<a href='#' style='display:none;' class='header-story' data-href='" + hashHref + "'></a>");
+      $('.header-stories-in').append($extraStory);
+      $brands = $brands.toArray();
+      $brands.unshift($extraStory[0]);
+      $brands = $($brands);
+    }
+  }
 
 
 
@@ -500,19 +511,22 @@ $.fn.stories = function(set) {
   }
 
   // REQUEST AND SET MEDIA IMAGE
-  var setImgSrc = function (obj) {
-    var dfd = $.Deferred();
-    var data = obj.data;
+  var imgSrc = function(data, params){
     var thumborConfig = $.extend(true, {}, window.appThumborConfig, {thumbor: {
         hasResize: true,
         hasTrim: false,
         isSmart: true,
         resizeWidth: "480",
         resizeHeight: "0"
-      }});
+      }}, params);
     var thumbor = new thumborUrlBuilder(thumborConfig);
     thumbor.setAmazonUrlPath(thumborConfig.amazonS3Path, data);
-    obj.imgSrc = thumbor.finalUrl();
+    return thumbor.finalUrl();
+  }
+  var setImgSrc = function (obj) {
+    var dfd = $.Deferred();
+    var data = obj.data;
+    obj.imgSrc = imgSrc(data);
     dfd.resolve(obj);
     return dfd.promise();
   }
@@ -569,51 +583,68 @@ $.fn.stories = function(set) {
    *
    */
 
-  // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
-  getAllData().always(function (storiesAjaxed) {
-    var mediaElementSetters = [];
-    $.each(storiesAjaxed, function (i, storieAjaxed) {
-      var storie = storieAjaxed[0];
-      storie.logo = $brands.eq(i).find('svg image').attr('xlink:href');
-      storie.storieIndex = i;
-      storie.stUrl = $brands.eq(i).attr('href');
-      storie.designator = $brands.eq(i).data('href');
-      storiesAll.push(storie);
-      mediaElementSetters.push(setArticleMedia(storie));
-    });
-    $.when.apply($, mediaElementSetters).always(function () {
-      _stories.log("STORIES :: " + "AJAXing done");
-      var storiesRendered = "";
-      $.each(storiesAll, function (i, story) {
-        storiesRendered += stories.templates.storie(story, true);
-      });
-      $storiesRendered.append(storiesRendered);
-      $('body').append($storiesRendered);
-      $storiesRendered.addClass('st-rendered');
+   // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
+   getAllData().always(function(storiesAjaxed){
+     var mediaElementSetters = [];
+     $.each(storiesAjaxed, function (i, storieAjaxed) {
+       var storie = storieAjaxed[0];
+       try {
+         storie.logo = $brands.eq(i).find('svg image').attr('xlink:href') ||
+         imgSrc({hash: storie.sponsors[0].elements[0].data.hash}, {resizeWidth: 50});
+       }
+       catch(e) {
+         storie.logo = "/assets/images/icons/apple-touch-icon-57x57.png";
+       }
+       storie.storieIndex = i;
+       storie.designator = $brands.eq(i).data('href');
+       storiesAll.push(storie);
+       mediaElementSetters.push(setArticleMedia(storie));
+     });
+     $.when.apply($, mediaElementSetters).always(function () {
+       _stories.log("STORIES :: " + "AJAXing done");
+       var storiesRendered = "";
+       $.each(storiesAll, function (i, story) {
+         storiesRendered += stories.templates.storie(story, true);
+       });
+       $storiesRendered.append(storiesRendered);
+       $('body').append($storiesRendered);
+       $storiesRendered.addClass('st-rendered');
 
 
-      $brands.each(function (i, o) {
-        var $o = $(o);
-        $o.attr('href', "#" + dce64($o.attr('rel')));
-      });
-
-      ///////
-      $('.all-st-wrapper').stories({apiPrefix: 'src/test-api', $eventColector: $('.header-stories-in')});
-      $brands.one('click', function (ev) {
-        ev.preventDefault();
-        var $this = $(this);
-        try {
-          _stories.prePlayVideos($('.all-st-wrapper')).always(function () {
-            var hash = $this.attr('href');
-            location.hash = hash;
-          });
-        } catch (e) {
-        }
-      });
-      ///////
+       $brands.each(function (i, o) {
+         var $o = $(o);
+         $o.attr('href', "#" + $o.data('href'));
+       });
 
 
-    });
+       ///////
+
+       $('.all-st-wrapper').stories({$eventColector: $('.header-stories-in')});
+
+       ///////
+
+
+
+       var storiesFirstClickHandler = function(ev){
+         ev.preventDefault();
+         var $this = $(this);
+         try {
+           _stories.prePlayVideos( $('.all-st-wrapper') ).always(function(){
+             var hash = $this.attr('href');
+             location.hash = hash;
+             $brands.off('click', storiesFirstClickHandler);  // @toDo :: CHECK PRECLICK FOR AUTOPLAY //////////////////////////
+           });
+         }
+         catch(e){}
+       }
+       $brands.on('click', storiesFirstClickHandler);
+
+
+
+       ///////
+
+
+     });
   });
 
 

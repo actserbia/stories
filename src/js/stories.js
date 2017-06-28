@@ -28,7 +28,7 @@ _stories.prePlayVideos = function($context, storieIndex){
     _stories.log("STORIES :: " + 'all videos preplayed');
     dfdReturn.resolve();
   });
-  
+
   return dfdReturn.promise();
 };
 
@@ -265,6 +265,8 @@ $.fn.stories = function(set) {
   * HASH NAVIGATION
   *
   */
+
+  hasher.raw = true;
 
   var setHashSilently = function(hash, history){
     hasher.changed.active = false; //disable changed signal

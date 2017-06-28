@@ -455,23 +455,30 @@
   });
 
 
-  $('.header-stories-in > a').on('click', function(ev, data){
+  $('.header-stories-in').on('stories-click', function(ev, data){
     console.log('ANALYTICS :: stories-click');
     console.log(data);
   });
 
 
-  $('.header-stories-in > a').one('click', function(ev){
+  var $headerStories = $('.header-stories-in > a');
+  var storiesFirstClickHandler = function(ev){
     ev.preventDefault();
     var $this = $(this);
     try {
       _stories.prePlayVideos( $('.all-st-wrapper') ).always(function(){
         var hash = $this.attr('href');
         location.hash = hash;
+        $headerStories.off('click', storiesFirstClickHandler);
       });
     }
     catch(e){}
-  });
+  }
+  $headerStories.one('click', storiesFirstClickHandler);
+
+
+
+
 
 
   </script>
