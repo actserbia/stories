@@ -655,9 +655,10 @@ $.fn.stories = function(set) {
     var href = $(ev.currentTarget).attr('href');
     if ( href.length > 1 ) {
       var index = $brands.index(ev.currentTarget);
-      console.log(':::::::: stories-click :::::::::::::::');
-      console.log( storiesAll[index].data.article_title );
-      //$GAEventRelay.trigger('stories-click', {hash: location.hash})
+      $GAEventRelay.trigger('stories-click', {
+        title: storiesAll[index].data.article_title,
+        term: storiesAll[index].terms[0].data.name_english
+      });
     }
   });
   $storiesRendered.on('_stories-view', function(ev, data){
