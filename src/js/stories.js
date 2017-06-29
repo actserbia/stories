@@ -40,20 +40,12 @@ $.fn.stories = function(set) {
   $allStWrapper = $(this);
 
   set = set || {};
-  var $eventColector = set.$eventColector || $(document);
   var $referralCloseUrl = "#";
 
   var storiesAll = [];
 
   var timeoutNext = 0;
   var timeoutNextT = 3000;
-
-
-  var getStoryTitle = function(index){
-    return $allStWrapper.find('st-title').eq(index);
-  }
-
-
 
   /*
   *
@@ -169,7 +161,7 @@ $.fn.stories = function(set) {
 
     $el.on("init", function(ev, slick){
       _stories.log("STORIES :: " + "wrapper slider inti");
-      $eventColector.trigger('stories-view', {index: initialSlide, title: getStoryTitle(initialSlide)});
+      $el.trigger('_stories-view', {index: initialSlide});
       ev.stopPropagation();
       ev.preventDefault();
       setTimeout(function(){
@@ -189,7 +181,7 @@ $.fn.stories = function(set) {
     $el.on("beforeChange", function(ev, slick, currentSlide, nextSlide){
       _stories.log("STORIES :: " + 'wrap slider beforeChange')
       if (currentSlide !== nextSlide) {
-        $eventColector.trigger('stories-view', {index: nextSlide, title: getStoryTitle(nextSlide)});
+        $el.trigger('_stories-view', {index: nextSlide});
       }
       ev.stopPropagation();
       ev.preventDefault();
@@ -290,18 +282,36 @@ $.fn.stories = function(set) {
       return;
     }
     if ( !$allStWrapper.hasClass('slick-initialized') ) {
-      $allStWrapper.find('.st-slider').each(function(i, stSlider){
-        sliderArticle($(stSlider));
+      $allStWrapper.find('.st-slider').each(function(i, articleSlider){
+        var $articleSlider = $(articleSlider);
+        sliderArticle($articleSlider);
+        var $closeButton = $articleSlider.parents('.st-wrapper').find('.st-close');
+        $closeButton.on('click', function(ev){
+          $allStWrapper.trigger('_stories-close', {index: i});
+          destroy();
+        });
+        var $moreButton = $articleSlider.parents('.st-wrapper').find('.st-more');
+        $moreButton.on('click', function(ev){
+          $allStWrapper.trigger('_stories-read-more', {index: i});
+        });
       });
       sliderWrapper($allStWrapper, index);
-      $allStWrapper.find(".st-close").on('click', destroy);
       $allStWrapper.addClass('st-opened');
       $(window).trigger('resize');
+      setTimeout(function(){
+        $(window).trigger('resize');
+      },1000);
     }
     else {
+      if ( $('.st-wrapper', $allStWrapper).eq(index).hasClass('slick-current')  ){ // if no slick onChange event is triggered (due to oppening same story)
+        $allStWrapper.trigger('_stories-view', {index: index});
+      }
       $allStWrapper.addClass('st-opened');
       $allStWrapper.slick('slickGoTo', index, true);
       $(window).trigger('resize');
+      setTimeout(function(){
+        $(window).trigger('resize');
+      },1000);
     }
   }
 

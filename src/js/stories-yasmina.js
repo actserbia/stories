@@ -40,39 +40,7 @@
   var apiUrls = [];
   var storiesAll = [];
   var $storiesRendered = $("<div class='all-st-wrapper'></div>");
-
-
-
-
-
-  // SETTING data('href')
-  if ($('html').hasClass('ua-type-mobile')) {
-    $brands.each(function (i, o) {
-      var $o = $(o);
-      $o.data('href', dce64($o.attr('rel')));
-    });
-  }
-
-
-  // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
-  if (!!location.hash && location.hash.toLowerCase().indexOf("/story/") !== -1) {
-    var hashHref = location.hash.replace(/^[#]/, "");
-    var exist = false;
-    $brands.each(function(i, brand){
-      $brand = $(brand);
-      if(  $brand.data('href') === hashHref  ) {
-        exits = true;
-      }
-    });
-    if (!exist) {
-      var $extraStory = $("<a href='#' style='display:none;' class='header-story' data-href='" + hashHref + "'></a>");
-      $('.header-stories-in').append($extraStory);
-      $brands = $brands.toArray();
-      $brands.unshift($extraStory[0]);
-      $brands = $($brands);
-    }
-  }
-
+  var $GAEventRelay = $('.header-stories-in');
 
 
 
@@ -190,73 +158,126 @@
    *
    */
 
+   // SETTING data('href')
+   $brands.each(function (i, o) {
+     var $o = $(o);
+     $o.data('href', dce64($o.attr('rel'))); // keep href in data to prevent too early click
+   });
+
+
+   // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
+   if (!!location.hash && location.hash.toLowerCase().indexOf("/story/") !== -1) {
+     var hashHref = location.hash.replace(/^[#]/, "");
+     var exist = false;
+     $brands.each(function(i, brand){
+       $brand = $(brand);
+       if(  $brand.data('href') === hashHref  ) {
+         exits = true;
+       }
+     });
+     if (!exist) {
+       var $extraStory = $("<a href='#' style='display:none;' class='header-story' data-href='" + hashHref + "'></a>");
+       $('.header-stories-in').append($extraStory);
+       $brands = $brands.toArray();
+       $brands.unshift($extraStory[0]);
+       $brands = $($brands);
+     }
+   }
+
    // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
-   getAllData().always(function(storiesAjaxed){
-     var mediaElementSetters = [];
-     $.each(storiesAjaxed, function (i, storieAjaxed) {
-       var storie = storieAjaxed[0];
-       try {
-         storie.logo = $brands.eq(i).find('svg image').attr('xlink:href') ||
-         imgSrc({hash: storie.sponsors[0].elements[0].data.hash}, {resizeWidth: 50});
-       }
-       catch(e) {
-         storie.logo = "/assets/images/icons/apple-touch-icon-57x57.png";
-       }
-       storie.storieIndex = i;
-       storie.designator = $brands.eq(i).data('href');
-       storiesAll.push(storie);
-       mediaElementSetters.push(setArticleMedia(storie));
-     });
-     $.when.apply($, mediaElementSetters).always(function () {
-       _stories.log("STORIES :: " + "AJAXing done");
-       var storiesRendered = "";
-       $.each(storiesAll, function (i, story) {
-         storiesRendered += stories.templates.storie(story, true);
-       });
-       $storiesRendered.append(storiesRendered);
-       $('body').append($storiesRendered);
-       $storiesRendered.addClass('st-rendered');
-
-
-       $brands.each(function (i, o) {
-         var $o = $(o);
-         $o.attr('href', "#" + $o.data('href'));
-       });
-
-
-       ///////
-
-       $('.all-st-wrapper').stories({$eventColector: $('.header-stories-in')});
-
-       ///////
-
-
-
-       var storiesFirstClickHandler = function(ev){
-         ev.preventDefault();
-         var $this = $(this);
+   var run = function(){
+     getAllData().always(function(storiesAjaxed){
+       var mediaElementSetters = [];
+       $.each(storiesAjaxed, function (i, storieAjaxed) {
+         var storie = storieAjaxed[0];
          try {
-           _stories.prePlayVideos( $('.all-st-wrapper') ).always(function(){
-             var hash = $this.attr('href');
-             location.hash = hash;
-             $brands.off('click', storiesFirstClickHandler);  // @toDo :: CHECK PRECLICK FOR AUTOPLAY //////////////////////////
-           });
+           storie.logo = $brands.eq(i).find('svg image').attr('xlink:href') ||
+           imgSrc({hash: storie.sponsors[0].elements[0].data.hash}, {resizeWidth: 50});
          }
-         catch(e){}
-       }
-       $brands.on('click', storiesFirstClickHandler);
+         catch(e) {
+           storie.logo = "/assets/images/icons/apple-touch-icon-57x57.png";
+         }
+         storie.storieIndex = i;
+         storie.designator = $brands.eq(i).data('href');
+         storiesAll.push(storie);
+         mediaElementSetters.push(setArticleMedia(storie));
+       });
+       $.when.apply($, mediaElementSetters).always(function () {
+         _stories.log("STORIES :: " + "AJAXing done");
+         var storiesRendered = "";
+         $.each(storiesAll, function (i, story) {
+           storiesRendered += stories.templates.storie(story, true);
+         });
+         $storiesRendered.append(storiesRendered);
+         $('body').append($storiesRendered);
+         $storiesRendered.addClass('st-rendered');
+         $brands.each(function (i, o) {
+           var $o = $(o);
+           $o.attr('href', "#" + $o.data('href'));
+         });
+         ///////
+         $storiesRendered.stories();
+         ///////
+         var storiesFirstClickHandler = function(ev){
+           ev.preventDefault();
+           var $this = $(this);
+           try {
+             _stories.prePlayVideos( $storiesRendered ).always(function(){
+               var hash = $this.attr('href');
+               location.hash = hash;
+             });
+           }
+           catch(e){}
+           $brands.off('click', storiesFirstClickHandler);
+         }
+         $brands.on('click', storiesFirstClickHandler);
 
+         ///////
 
-
-       ///////
-
-
+       });
      });
+   }
+
+
+
+
+
+   if ($('html').hasClass('ua-type-mobile')) {
+     run();
+   }
+
+
+  // GA
+  $brands.on('click', function(ev){
+    var href = $(ev.currentTarget).attr('href');
+    if ( href.length > 1 ) {
+      var index = $brands.index(ev.currentTarget);
+      console.log(':::::::: stories-click :::::::::::::::');
+      console.log( storiesAll[index].data.article_title );
+      //$GAEventRelay.trigger('stories-click', {hash: location.hash})
+    }
   });
-
-
-
-
+  $storiesRendered.on('_stories-view', function(ev, data){
+    var index = data.index;
+    $GAEventRelay.trigger('stories-view', {
+      title: storiesAll[index].data.article_title,
+      term: storiesAll[index].terms[0].data.name_english
+    });
+  });
+  $storiesRendered.on('_stories-close', function(ev, data){
+    var index = data.index;
+    $GAEventRelay.trigger('stories-close', {
+      title: storiesAll[index].data.article_title,
+      term: storiesAll[index].terms[0].data.name_english
+    });
+  });
+  $storiesRendered.on('_stories-read-more', function(ev, data){
+    var index = data.index;
+    $GAEventRelay.trigger('stories-read-more', {
+      title: storiesAll[index].data.article_title,
+      term: storiesAll[index].terms[0].data.name_english
+    });
+  });
 
 
 
