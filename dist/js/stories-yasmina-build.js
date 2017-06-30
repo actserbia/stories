@@ -619,21 +619,42 @@ $.fn.stories = function(set) {
            $o.attr('href', "#" + $o.data('href'));
          });
          ///////
-         $storiesRendered.stories();
-         ///////
-         var storiesFirstClickHandler = function(ev){
-           ev.preventDefault();
-           var $this = $(this);
-           try {
-             _stories.prePlayVideos( $storiesRendered ).always(function(){
-               var hash = $this.attr('href');
-               location.hash = hash;
+
+         // GO GO GO 
+         var onAllImageLoaded = function(){
+           $storiesRendered.stories();
+           ///////
+           var storiesFirstClickHandler = function(ev){
+             ev.preventDefault();
+             var $this = $(this);
+             try {
+               _stories.prePlayVideos( $storiesRendered ).always(function(){
+                 var hash = $this.attr('href');
+                 location.hash = hash;
+               });
+             }
+             catch(e){}
+             $brands.off('click', storiesFirstClickHandler);
+           }
+           $brands.on('click', storiesFirstClickHandler);
+         }
+
+         var imgPromises = [];
+         $storiesRendered.find('.item-img > img').each(function(i, img){ // wait images to be loaded
+           var imgDfd = $.Deferred();
+           var $img = $(img);
+           if ( $img.prop('complete error') !== true ) {
+             $img.on('load error', function(){
+               imgDfd.resolve();
              });
            }
-           catch(e){}
-           $brands.off('click', storiesFirstClickHandler);
-         }
-         $brands.on('click', storiesFirstClickHandler);
+           else {
+             imgDfd.resolve();
+           }
+           imgPromises.push(imgDfd.promise());
+         })
+
+         $.when.apply($, imgPromises).always(onAllImageLoaded);
 
          ///////
 
