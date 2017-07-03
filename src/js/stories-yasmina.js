@@ -166,8 +166,9 @@
 
 
    // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
-   if (!!location.hash && location.hash.toLowerCase().indexOf("/story/") !== -1) {
-     var hashHref = location.hash.replace(/^[#]/, "");
+   var lHash = decodeURI(decodeURI(decodeURI(decodeURI(location.hash))));
+   if (!!location.hash && lHash.indexOf("/story/") !== -1) {
+     var hashHref = lHash.replace(/^[#]/, "");
      var exist = false;
      $brands.each(function(i, brand){
        $brand = $(brand);
@@ -217,7 +218,7 @@
          });
          ///////
 
-         // GO GO GO 
+         // GO GO GO
          var onAllImageLoaded = function(){
            $storiesRendered.stories();
            ///////

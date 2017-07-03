@@ -352,7 +352,7 @@ $.fn.stories = function(set) {
 
 
   var hasherOnChange = function(newHash, oldHash){
-    var designator = "/" + newHash;
+    var designator = "/" + decodeURI(decodeURI(decodeURI(decodeURI(newHash))));
     var index = $('.st-wrapper', $allStWrapper).index( $("[data-designator='" + designator + "']", $allStWrapper) );
     if (index === -1) {
       $allStWrapper.removeClass('st-opened');
@@ -569,8 +569,9 @@ $.fn.stories = function(set) {
 
 
    // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
-   if (!!location.hash && location.hash.toLowerCase().indexOf("/story/") !== -1) {
-     var hashHref = location.hash.replace(/^[#]/, "");
+   var lHash = decodeURI(decodeURI(decodeURI(decodeURI(location.hash))));
+   if (!!location.hash && lHash.indexOf("/story/") !== -1) {
+     var hashHref = lHash.replace(/^[#]/, "");
      var exist = false;
      $brands.each(function(i, brand){
        $brand = $(brand);
@@ -620,7 +621,7 @@ $.fn.stories = function(set) {
          });
          ///////
 
-         // GO GO GO 
+         // GO GO GO
          var onAllImageLoaded = function(){
            $storiesRendered.stories();
            ///////

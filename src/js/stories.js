@@ -273,7 +273,7 @@ $.fn.stories = function(set) {
 
 
   var hasherOnChange = function(newHash, oldHash){
-    var designator = "/" + newHash;
+    var designator = "/" + decodeURI(decodeURI(decodeURI(decodeURI(newHash))));
     var index = $('.st-wrapper', $allStWrapper).index( $("[data-designator='" + designator + "']", $allStWrapper) );
     if (index === -1) {
       $allStWrapper.removeClass('st-opened');
