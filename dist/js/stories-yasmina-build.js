@@ -320,7 +320,11 @@ $.fn.stories = function(set) {
 
   var destroy = function(){
     if (document.referrer === "") {
-      window.history.go(-1);
+      if (window.history.length > 1){
+        window.history.go(-1);
+      } else {
+        window.location.replace($referralCloseUrl);
+      }
     }
     else {
       window.location.replace($referralCloseUrl);
