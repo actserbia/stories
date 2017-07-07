@@ -81,29 +81,43 @@ var _stories = {};
 
 
 _stories.log = function(){};
-if (location.hash==="#debug"||location.hash==="#debug-st"){
+if (location.hash.indexOf("debug-st")>-1){
   _stories.log = console.log;
 }
 
 
 // PREPLAY VIDEOS TO FIX AUTOPLAY
-_stories.prePlayVideos = function($context, storieIndex){
+_stories.prePlayVideos = function($context){
   _stories.prePlayVideos = function(){};
   var dfdReturn = $.Deferred();
   var deferreds = [];
+
+
+
   $('video', $context).each(function(i, vid){
     var dfd = $.Deferred();
     deferreds.push(dfd);
-    $(vid).one('timeupdate', function(ev){
-      ev.stopPropagation();
-      vid.pause();
-      vid.currentTime = 0.1; // fix
-      _stories.log("STORIES :: " + 'video '+ i +' timeupdate, t='+vid.currentTime);
-      dfd.resolve();
-    });
+
+
+    var timeupdatePreplayHandler = function(ev){
+      if (vid.currentTime > 0) {
+        $(vid).off('timeupdate', timeupdatePreplayHandler);
+        vid.pause();
+        vid.muted = false;
+        //vid.currentTime = 0.1; // fix
+        _stories.log("STORIES :: " + 'video '+ i +' preplay time-update, t='+vid.currentTime);
+        dfd.resolve();
+      }
+    }
+
+
+    $(vid).on('timeupdate', timeupdatePreplayHandler);
+    vid.muted = true;
     vid.play();
   });
-  $.when.apply($, deferreds).then(function(){
+
+
+  $.when.apply($, deferreds).always(function(){
     _stories.log("STORIES :: " + 'all videos preplayed');
     dfdReturn.resolve();
   });
@@ -132,22 +146,32 @@ $.fn.stories = function(set) {
   *
   */
 
-  // REWIND ALL VIDEOS
+  // R E W I N D   A L L   V I D E O S
   var rewindVideos = function($context){
     $('video', $context).each(function(i, video){
       //$(video).addClass('st-playing');
-      video.pause();
-      video.currentTime = 0;
-      _stories.log("STORIES :: " + 'all videos rewinded');
+      if (!video.paused) {
+        video.pause();
+        _stories.log("STORIES :: " + 'one video paused');
+      }
+      if (video.currentTime > 0.1) {
+        video.currentTime = 0;
+        _stories.log("STORIES :: " + 'one video t=0');
+      }
     });
+    _stories.log("STORIES :: " + 'all videos r e w i n d e d');
   };
 
   // VIDEO AUTOPLAY DETECTION -> .CLASS
+  var autoplayDetection = function(ev){
+    var video = this;
+    if ( video.currentTime > 0 ){
+      $(video).off('timeupdate', autoplayDetection);
+      $(video).parent().addClass('st-video-auto');
+    }
+  }
   $('video', $allStWrapper).each(function(i, video){
-    var $video = $(video);
-    $video.one('timeupdate', function(){
-      $(this).parent().addClass('st-video-auto');
-    });
+    $(video).on('timeupdate', autoplayDetection);
   });
 
   // PLAY BUTTON GESTURE -> PREPLAY FOR AUTOPLAY
@@ -592,6 +616,8 @@ $.fn.stories = function(set) {
      }
    }
 
+
+
    // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
    var run = function(){
      getAllData().always(function(storiesAjaxed){
@@ -627,8 +653,9 @@ $.fn.stories = function(set) {
 
          // GO GO GO
          var onAllImageLoaded = function(){
-           $storiesRendered.stories();
-           ///////
+
+           $storiesRendered.stories();  /////// <---- 2nd ACT === Stories Slider /////////////////////////////
+
            var storiesFirstClickHandler = function(ev){
              ev.preventDefault();
              var $this = $(this);
@@ -666,14 +693,10 @@ $.fn.stories = function(set) {
        });
      });
    }
-
-
-
-
-
    if ($('html').hasClass('ua-type-mobile')) {
      run();
    }
+
 
 
   // GA

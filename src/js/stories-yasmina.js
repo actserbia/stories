@@ -185,6 +185,8 @@
      }
    }
 
+
+
    // A J A X I N G, REQUESTING/SETTING   A N D   R E N D E R I N G  (FIRST THING TO DO)
    var run = function(){
      getAllData().always(function(storiesAjaxed){
@@ -220,8 +222,9 @@
 
          // GO GO GO
          var onAllImageLoaded = function(){
-           $storiesRendered.stories();
-           ///////
+
+           $storiesRendered.stories();  /////// <---- 2nd ACT === Stories Slider /////////////////////////////
+
            var storiesFirstClickHandler = function(ev){
              ev.preventDefault();
              var $this = $(this);
@@ -259,14 +262,10 @@
        });
      });
    }
-
-
-
-
-
    if ($('html').hasClass('ua-type-mobile')) {
      run();
    }
+
 
 
   // GA
