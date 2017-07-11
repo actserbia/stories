@@ -6,43 +6,60 @@ if (location.hash.indexOf("debug-st")>-1){
   _stories.log = console.log;
 }
 
-
-// PREPLAY VIDEOS TO FIX AUTOPLAY
+// PREPLAY FIX :: iPhone
+var prePlayByMute = function(vid){
+  var dfd = $.Deferred();
+  var volumechangePreplayHandler = function(ev){
+    if (vid.muted === false) {
+      $(vid).off('volumechange', volumechangePreplayHandler);
+      vid.pause();
+      $(vid).parent().addClass('st-video-auto');
+      _stories.log("STORIES :: " + 'video '+ $(vid).find('source').eq(0).attr('src') +' preplay volumechange unmuted');
+      dfd.resolve();
+    }
+  }
+  $(vid).on('volumechange', volumechangePreplayHandler);
+  vid.muted = true;
+  vid.muted = false;
+  return dfd.promise();
+}
+// PREPLAY FIX :: other devices
+var prePlayByPlay = function(vid){
+  var dfd = $.Deferred();
+  var timeupdatePreplayHandler = function(ev){
+    if (vid.currentTime > 0) {
+      $(vid).off('timeupdate', timeupdatePreplayHandler);
+      vid.pause();
+      $(vid).parent().addClass('st-video-auto');
+      //vid.muted = false;
+      //vid.currentTime = 0.1; // fix
+      _stories.log("STORIES :: " + 'video '+ $(vid).find('source').eq(0).attr('src') +' preplay time-update, t='+vid.currentTime);
+      dfd.resolve();
+    }
+  }
+  $(vid).on('timeupdate', timeupdatePreplayHandler);
+  //vid.muted = false;
+  vid.play();
+  return dfd.promise();
+}
+// PREPLAY FIX
 _stories.prePlayVideos = function($context){
   _stories.prePlayVideos = function(){};
   var dfdReturn = $.Deferred();
   var deferreds = [];
-
-
-
+  if ( /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream ) {
+    var preplayFunction = prePlayByMute;
+  }
+  else {
+    var preplayFunction = prePlayByPlay;
+  }
   $('video', $context).each(function(i, vid){
-    var dfd = $.Deferred();
-    deferreds.push(dfd);
-
-
-    var timeupdatePreplayHandler = function(ev){
-      if (vid.currentTime > 0) {
-        $(vid).off('timeupdate', timeupdatePreplayHandler);
-        vid.pause();
-        vid.muted = false;
-        //vid.currentTime = 0.1; // fix
-        _stories.log("STORIES :: " + 'video '+ i +' preplay time-update, t='+vid.currentTime);
-        dfd.resolve();
-      }
-    }
-
-
-    $(vid).on('timeupdate', timeupdatePreplayHandler);
-    vid.muted = true;
-    vid.play();
+     deferreds.push( prePlayByMute(vid) );
   });
-
-
   $.when.apply($, deferreds).always(function(){
     _stories.log("STORIES :: " + 'all videos preplayed');
     dfdReturn.resolve();
   });
-
   return dfdReturn.promise();
 };
 
@@ -134,8 +151,8 @@ $.fn.stories = function(set) {
       $nextItem.addClass('st-active');
       // video kaltura
       if ($nextItem.hasClass('item-kaltura')) {
-        _stories.log("STORIES :: " + 'video item founded');
-        $nextItem.find('video')[0].play();
+          _stories.log("STORIES :: " + 'video item founded');
+          $nextItem.find('video')[0].play();
       }
       // igmage
       else if ($nextItem.hasClass('item-img')) {
@@ -300,8 +317,8 @@ $.fn.stories = function(set) {
   }
 
 
-  var hasherOnChange = function(newHash, oldHash){
-    var designator = "/" + decodeURI(decodeURI(decodeURI(decodeURI(newHash))));
+  var hasherOnChange = function(newHash, oldHash) {
+    var designator = "/" + encodeURI(decodeURI(decodeURI(decodeURI(newHash))));
     var index = $('.st-wrapper', $allStWrapper).index( $("[data-designator='" + designator + "']", $allStWrapper) );
     if (index === -1) {
       $allStWrapper.removeClass('st-opened');

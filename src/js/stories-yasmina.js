@@ -161,19 +161,19 @@
    // SETTING data('href')
    $brands.each(function (i, o) {
      var $o = $(o);
-     $o.data('href', dce64($o.attr('rel'))); // keep href in data to prevent too early click
+     $o.data('href', encodeURI(dce64($o.attr('rel')))); // keep href in data to prevent too early click
    });
 
 
    // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
-   var lHash = decodeURI(decodeURI(decodeURI(decodeURI(location.hash))));
+   var lHash = encodeURI(decodeURI(decodeURI(decodeURI(location.hash))));
    if (!!location.hash && lHash.indexOf("/story/") !== -1) {
      var hashHref = lHash.replace(/^[#]/, "");
      var exist = false;
      $brands.each(function(i, brand){
        $brand = $(brand);
        if(  $brand.data('href') === hashHref  ) {
-         exits = true;
+         exist = true;
        }
      });
      if (!exist) {
