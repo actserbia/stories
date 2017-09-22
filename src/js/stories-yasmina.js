@@ -73,7 +73,7 @@
     var requests = [];
     var _arguments;
     $brands.each(function (i, o) {
-      var href = $(o).data('href');
+      var href = $(o).attr('href').replace(/^[#]/, "");;
       apiUrls[i] = href;
     });
     $.each(apiUrls, function (i, o) {
@@ -150,19 +150,11 @@
 
 
 
-
-
   /*
    *
    *  R U N E R S
    *
    */
-
-   // SETTING data('href')
-   $brands.each(function (i, o) {
-     var $o = $(o);
-     $o.data('href', encodeURI(dce64($o.attr('rel')))); // keep href in data to prevent too early click
-   });
 
 
    // ADD STORY IF REQUIRED BUT NOT ON HEADER STORYES MENU
@@ -172,12 +164,13 @@
      var exist = false;
      $brands.each(function(i, brand){
        $brand = $(brand);
-       if(  $brand.data('href') === hashHref  ) {
+       if(  $brand.attr('href').replace(/^[#]/, "") === hashHref  ) {
          exist = true;
        }
      });
      if (!exist) {
-       var $extraStory = $("<a href='#' style='display:none;' class='header-story' data-href='" + hashHref + "'></a>");
+       _stories.log("STORIES :: " + "Adding extra story from #hash...");
+       var $extraStory = $("<a href='#" + hashHref + "' style='display:none;' class='header-story'></a>");
        $('.header-stories-in').append($extraStory);
        $brands = $brands.toArray();
        $brands.unshift($extraStory[0]);
@@ -192,6 +185,10 @@
      getAllData().always(function(storiesAjaxed){
        var mediaElementSetters = [];
        $.each(storiesAjaxed, function (i, storieAjaxed) {
+         if (storieAjaxed[1]!=="success" || typeof(storieAjaxed[0])!=="object" || storieAjaxed[0].length < 1) {
+           console.log("STORIES :: story fetch error / not found" );
+           return true;
+         }
          var storie = storieAjaxed[0];
          try {
            storie.logo = $brands.eq(i).find('svg image').attr('xlink:href') ||
@@ -201,7 +198,7 @@
            storie.logo = "/assets/images/icons/apple-touch-icon-57x57.png";
          }
          storie.storieIndex = i;
-         storie.designator = $brands.eq(i).data('href');
+         storie.designator = $brands.eq(i).attr('href').replace(/^[#]/, "");;
          storiesAll.push(storie);
          mediaElementSetters.push(setArticleMedia(storie));
        });
@@ -214,11 +211,7 @@
          $storiesRendered.append(storiesRendered);
          $('body').append($storiesRendered);
          $storiesRendered.addClass('st-rendered');
-         $brands.each(function (i, o) {
-           var $o = $(o);
-           $o.attr('href', "#" + $o.data('href'));
-         });
-         ///////
+
 
          // GO GO GO
          var onAllImageLoaded = function(){
@@ -238,6 +231,9 @@
              $brands.off('click', storiesFirstClickHandler);
            }
            $brands.on('click', storiesFirstClickHandler);
+
+           $brands.removeAttr('onclick');
+           $brands.removeAttr('ontouchstart');
          }
 
          var imgPromises = [];
@@ -303,8 +299,8 @@
 
 
 
-
   _stories.log("STORIES :: " + 'stories plugin loaded');
+
 
 
   //};
