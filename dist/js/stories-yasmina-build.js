@@ -483,6 +483,7 @@ $.fn.stories = function(set) {
 
 
 
+  var $brandsContainer = $('.header-stories');
   var $brands = $('.header-story');
   var apiPrefix = "";
   var apiUrls = [];
@@ -490,6 +491,48 @@ $.fn.stories = function(set) {
   var $storiesRendered = $("<div class='all-st-wrapper'></div>");
   var $GAEventRelay = $('.header-stories-in');
 
+
+  /*
+   *
+   *  V i s i t e d ?
+   *
+   */
+   var setVisited = function(hash) {
+     if (typeof(Storage) !== "undefined") {
+       var store = JSON.parse(localStorage.storiesVisited || "[]");
+       var id = (/(\d+)(?!.*\d)/).exec(hash)[1];
+       if (store.indexOf(id) === -1) {
+         store.push(id);
+       }
+       localStorage.storiesVisited = JSON.stringify(store);
+     }
+   }
+   var isVisited = function(hash) {
+     if (typeof(Storage) !== "undefined") {
+       var store = JSON.parse(localStorage.storiesVisited || "[]");
+       var id = (/(\d+)(?!.*\d)/).exec(hash)[1];
+       if (store.indexOf(id) === -1) {
+         return false;
+       }
+       else {
+         return true;
+       }
+     }
+   }
+   $storiesRendered.on('_stories-view', function(ev, data){
+     var index = data.index;
+     console.log(storiesAll[index].designator);
+     setVisited(storiesAll[index].designator);
+   });
+   $brands.each(function(i, o){
+     $o = $(o);
+     if ( isVisited($o.attr('href')) ) {
+       $o.addClass('st-visited');
+     }
+     else {
+       $o.addClass('st-new');
+     }
+   });
 
 
   /*
@@ -682,6 +725,7 @@ $.fn.stories = function(set) {
 
            $brands.removeAttr('onclick');
            $brands.removeAttr('ontouchstart');
+           $brandsContainer.addClass('st-ready');
          }
 
          var imgPromises = [];

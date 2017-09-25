@@ -10,6 +10,12 @@ div.header-stories {
   direction: ltr;
   clear: both;
   box-shadow: 0px 4px 1px 4px rgba(0,0,0,0.10);
+  opacity: 0.77;
+  -webkit-transition: all .4s;
+  transition: all .4s;
+  &.st-ready {
+    opacity: 1;
+  }
   h2 {
     text-align: center;
     font-size: .66rem;
@@ -42,6 +48,10 @@ div.header-stories {
         }
       }
       & svg {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        -webkit-transition: filter .4s, -webkit-filter .4s;
+        transition: filter .4s, -webkit-filter .4s;
         .circle-outer {
           stroke-width: 3;
           stroke: $gold;
@@ -59,9 +69,14 @@ div.header-stories {
           fill: white;
         }
       }
-      &:visited svg {
+      &.st-new svg,
+      &.st-visited svg {
+        -webkit-filter: grayscale(0);
+        filter: grayscale(0);
+      }
+      &.st-visited svg {
         .circle-outer {
-          stroke-width: 1;
+          //stroke-width: 1;
           stroke: $smoke;
         }
         .circle-play {

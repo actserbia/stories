@@ -190,7 +190,12 @@ div.header-stories {
   height: auto;
   direction: ltr;
   clear: both;
-  box-shadow: 0px 4px 1px 4px rgba(0, 0, 0, 0.1); }
+  box-shadow: 0px 4px 1px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0.77;
+  -webkit-transition: all .4s;
+  transition: all .4s; }
+  div.header-stories.st-ready {
+    opacity: 1; }
   div.header-stories h2 {
     text-align: center;
     font-size: .66rem;
@@ -223,23 +228,31 @@ div.header-stories {
           -ms-transform: translate(-50%, -50%);
           -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%); }
-      div.header-stories .header-stories-in .header-story svg .circle-outer {
-        stroke-width: 3;
-        stroke: #9e914c;
-        -webkit-transition: all .4s;
-        transition: all .4s; }
-      div.header-stories .header-stories-in .header-story svg .circle-play {
-        stroke-width: 2;
-        stroke: white;
-        fill: #9e914c;
-        -webkit-transition: all .4s;
-        transition: all .4s; }
-      div.header-stories .header-stories-in .header-story svg .path-play {
-        fill: white; }
-      div.header-stories .header-stories-in .header-story:visited svg .circle-outer {
-        stroke-width: 1;
+      div.header-stories .header-stories-in .header-story svg {
+        -webkit-filter: grayscale(100%);
+        filter: grayscale(100%);
+        -webkit-transition: filter .4s, -webkit-filter .4s;
+        transition: filter .4s, -webkit-filter .4s; }
+        div.header-stories .header-stories-in .header-story svg .circle-outer {
+          stroke-width: 3;
+          stroke: #9e914c;
+          -webkit-transition: all .4s;
+          transition: all .4s; }
+        div.header-stories .header-stories-in .header-story svg .circle-play {
+          stroke-width: 2;
+          stroke: white;
+          fill: #9e914c;
+          -webkit-transition: all .4s;
+          transition: all .4s; }
+        div.header-stories .header-stories-in .header-story svg .path-play {
+          fill: white; }
+      div.header-stories .header-stories-in .header-story.st-new svg,
+      div.header-stories .header-stories-in .header-story.st-visited svg {
+        -webkit-filter: grayscale(0);
+        filter: grayscale(0); }
+      div.header-stories .header-stories-in .header-story.st-visited svg .circle-outer {
         stroke: #e9e9e9; }
-      div.header-stories .header-stories-in .header-story:visited svg .circle-play {
+      div.header-stories .header-stories-in .header-story.st-visited svg .circle-play {
         fill: #e9e9e9; }
       div.header-stories .header-stories-in .header-story .story-sponsor-name {
         display: block;
