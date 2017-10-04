@@ -18,7 +18,7 @@
       <div class="header-stories">
         <div class="header-stories-in">
 
-          <a class="header-story" href="#/story/test-story-1-1260417">
+          <a class="header-story  st-new" href="#/story/test-story-1-1260417">
             <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
@@ -36,7 +36,7 @@
             <span class="story-sponsor-name">chanel</span>
           </a>
 
-          <a class="header-story" href="#/story/cartier-story-1260447">
+          <a class="header-story  st-new" href="#/story/cartier-story-1260447">
             <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
@@ -54,7 +54,7 @@
             <span class="story-sponsor-name">cartier</span>
           </a>
 
-          <a class="header-story" href="#/story/nespresso-story-1260452">
+          <a class="header-story  st-new" href="#/story/nespresso-story-1260452">
             <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
@@ -72,7 +72,7 @@
             <span class="story-sponsor-name">nespresso</span>
           </a>
 
-          <a class="header-story" href="#/story/vca-story-1260462">
+          <a class="header-story  st-new" href="#/story/vca-story-1260462">
             <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
@@ -90,7 +90,7 @@
             <span class="story-sponsor-name">van cleef and arpels</span>
           </a>
 
-          <a class="header-story" href="#/story/louis-vuitton-story-1260457">
+          <a class="header-story  st-new" href="#/story/louis-vuitton-story-1260457">
             <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
@@ -108,7 +108,7 @@
             <span class="story-sponsor-name">Louis Vuitton</span>
           </a>
 
-          <a class="header-story" href="#/story/test-story-1-1260417">
+          <a class="header-story  st-new" href="#/story/test-story-1-1260417">
             <span class="story-logo">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
                 <defs>
@@ -474,6 +474,7 @@
 
 
   var $headerStories = $('.header-stories-in > a');
+  var $brandsContainer = $('.header-stories');
   var storiesFirstClickHandler = function(ev){
     ev.preventDefault();
     var $this = $(this);
@@ -486,11 +487,12 @@
     }
     catch(e){}
   }
+
+
   $headerStories.one('click', storiesFirstClickHandler);
 
 
-
-
+  $brandsContainer.addClass('st-ready');
 
 
   </script>
