@@ -163,6 +163,7 @@
       }
     }
     .st-footer {
+      opacity: 0;
       a {
         $height: 50px;
         display: block;
@@ -177,5 +178,8 @@
         @include shadow-txt;
       }
     }
+  }
+  .last-slide .st-footer { //redmine#13476
+    opacity: 0.99!important;
   }
 }

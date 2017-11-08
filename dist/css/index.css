@@ -175,18 +175,22 @@ a {
             background: transparent url(http://www.yasmina.com/assets/images/mobile-video-play-btn.png) center center no-repeat; }
           .all-st-wrapper .st-wrapper .st-main .st-slider .item.item-kaltura.st-video-auto .st-play-button {
             display: none; }
-    .all-st-wrapper .st-wrapper .st-footer a {
-      display: block;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      height: 50px;
-      line-height: 50px;
-      width: 100%;
-      text-align: center;
-      color: #eeeeee;
-      text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
-      transform: translateZ(0); }
+    .all-st-wrapper .st-wrapper .st-footer {
+      opacity: 0; }
+      .all-st-wrapper .st-wrapper .st-footer a {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 50px;
+        line-height: 50px;
+        width: 100%;
+        text-align: center;
+        color: #eeeeee;
+        text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+        transform: translateZ(0); }
+  .all-st-wrapper .last-slide .st-footer {
+    opacity: 0.99 !important; }
 
 div.header-stories {
   position: relative;

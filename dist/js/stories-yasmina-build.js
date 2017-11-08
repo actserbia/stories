@@ -155,7 +155,7 @@ $.fn.stories = function(set) {
   var storiesAll = [];
 
   var timeoutNext = 0;
-  var timeoutNextT = 999993000;
+  var timeoutNextT = 3000;
 
   /*
   *
@@ -240,6 +240,11 @@ $.fn.stories = function(set) {
         timeoutNext = setTimeout(function(){
           next($el);
         }, timeoutNextT);
+      }
+      // http://redmine.diwanee.com/issues/13476
+      $el.parents('.st-wrapper').removeClass('last-slide');
+      if (slick.$slides.length-1 == nextSlide) {
+        $el.parents('.st-wrapper').addClass('last-slide');
       }
     });
     $slides.on('click', function(ev){
