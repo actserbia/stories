@@ -76,7 +76,7 @@ $.fn.stories = function(set) {
   var storiesAll = [];
 
   var timeoutNext = 0;
-  var timeoutNextT = 3000;
+  var timeoutNextT = 999993000;
 
   /*
   *
