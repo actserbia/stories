@@ -164,6 +164,7 @@
     }
     .st-footer {
       opacity: 0;
+      visibility: hidden;
       a {
         $height: 50px;
         display: block;
@@ -181,5 +182,6 @@
   }
   .last-slide .st-footer { //redmine#13476
     opacity: 0.99!important;
+    visibility: visible;
   }
 }

@@ -176,7 +176,8 @@ a {
           .all-st-wrapper .st-wrapper .st-main .st-slider .item.item-kaltura.st-video-auto .st-play-button {
             display: none; }
     .all-st-wrapper .st-wrapper .st-footer {
-      opacity: 0; }
+      opacity: 0;
+      visibility: hidden; }
       .all-st-wrapper .st-wrapper .st-footer a {
         display: block;
         position: absolute;
@@ -190,7 +191,8 @@ a {
         text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
         transform: translateZ(0); }
   .all-st-wrapper .last-slide .st-footer {
-    opacity: 0.99 !important; }
+    opacity: 0.99 !important;
+    visibility: visible; }
 
 div.header-stories {
   position: relative;
