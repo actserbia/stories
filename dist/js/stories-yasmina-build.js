@@ -773,7 +773,6 @@ $.fn.stories = function(set) {
     }
   });
   $storiesRendered.on('_stories-view', function(ev, data){
-    console.log("------ storie view")
     var index = data.index;
     $GAEventRelay.trigger('stories-view', {
       title: storiesAll[index].data.article_title,
