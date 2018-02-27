@@ -526,7 +526,7 @@ $.fn.stories = function(set) {
    }
    $storiesRendered.on('_stories-view', function(ev, data){
      var index = data.index;
-     console.log(storiesAll[index].designator);
+     //console.log(storiesAll[index].designator);
      setVisited(storiesAll[index].designator);
    });
    $brands.each(function(i, o){
@@ -773,6 +773,7 @@ $.fn.stories = function(set) {
     }
   });
   $storiesRendered.on('_stories-view', function(ev, data){
+    console.log("------ storie view")
     var index = data.index;
     $GAEventRelay.trigger('stories-view', {
       title: storiesAll[index].data.article_title,
