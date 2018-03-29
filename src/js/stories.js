@@ -136,7 +136,7 @@ $.fn.stories = function(set) {
     $el.on('init', function(ev, slick){
       slick.$slider.data('slick', slick);
       if (slick.slideCount===1) {
-        slick.$slider.parents('.st-wrapper').find(".dots-wrapp").append("<ul class='slick-dots'><li class='slick-active'><span></span></li></ul>");
+        slick.$slider.parents('.st-wrapper').find(".dots-wrapp").append("<ul class='position-indicators'><li class='slick-active'><span></span></li></ul>");
       }
     });
     $el.on('beforeChange', function(ev, slick, currentSlide, nextSlide){
@@ -195,6 +195,7 @@ $.fn.stories = function(set) {
       swipe: false,
       rtl: false,
       dots: true,
+      dotsClass: 'position-indicators',
       appendDots: $el.parents('.st-wrapper').find('.dots-wrapp'),
       customPaging: function(slider, i){
         return "<span></span>";
